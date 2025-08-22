@@ -1,6 +1,5 @@
 package com.codeforall.online.bullseye.playables;
 
-public class Player {
-
+public class Player extends Entity {
 
 }

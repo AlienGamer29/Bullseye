@@ -10,7 +10,7 @@ public class Arena {
     private Picture picture;
 
     public Arena() {
-        picture = new Picture(0,0, "resources/backgroundResized.jpeg");
+        picture = new Picture(-5,0, "resources/background.jpeg");
         picture.draw();
     }
 
