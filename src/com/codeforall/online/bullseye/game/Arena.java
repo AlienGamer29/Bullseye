@@ -9,8 +9,8 @@ public class Arena {
     private int height;
     private Picture picture;
 
-    public Arena( ) {
-        picture = new Picture(0,0, "resources/background.jpeg");
+    public Arena() {
+        picture = new Picture(0,0, "resources/backgroundResized.jpeg");
         picture.draw();
     }
 
