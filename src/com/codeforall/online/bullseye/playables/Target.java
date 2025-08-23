@@ -6,15 +6,15 @@ import com.codeforall.simplegraphics.pictures.Picture;
 public class Target extends Entity implements Collidables {
 
     private Direction currDirection;
-    private int distance;
 
     public Target(int x, int y) {
         super(x, y);
         picture = new Picture(x, y, "resources/target.png");
-        picture.grow(-210, -210);
-        picture.translate(-210, -210);
+        picture.grow(-200, -200);
+        picture.translate(-200, -200);
         picture.draw();
-        speed = 3;
+
+        speed = 1;
         currDirection = Direction.values()[(int) (Math.random() * Direction.values().length)];
     }
 
