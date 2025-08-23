@@ -1,17 +1,21 @@
 package com.codeforall.online.bullseye;
 
 import com.codeforall.online.bullseye.game.Arena;
-import com.codeforall.simplegraphics.graphics.Canvas;
+import com.codeforall.online.bullseye.playables.Target;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
-        Canvas.setMaxX(760);
-        Canvas.setMaxY(512);
 
         Arena arena = new Arena();
+        Target target = new Target(900, 300);
+        System.out.println(arena.getBottom());
+        System.out.println(arena.getTop());
 
+        while (true) {
+
+            Thread.sleep(150);
+            target.update(arena);
+        }
     }
 }
