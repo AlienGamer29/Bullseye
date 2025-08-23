@@ -9,6 +9,8 @@ public class Target extends Entity implements Collidables {
 
     public Target(int x, int y) {
         super(x, y);
+
+        // Create and draw the target picture, resize and recenter
         picture = new Picture(x, y, "resources/target.png");
         picture.grow(-200, -200);
         picture.translate(-200, -200);
@@ -18,6 +20,7 @@ public class Target extends Entity implements Collidables {
         currDirection = Direction.values()[(int) (Math.random() * Direction.values().length)];
     }
 
+    //Getters for picture borders
     @Override
     public int getX() {
         return picture.getX();
@@ -38,10 +41,13 @@ public class Target extends Entity implements Collidables {
         return picture.getMaxY();
     }
 
+
+    // Updates target position: moves in the current direction and checks arena bounds
     public void update(Arena arena) {
             moveInDirection(currDirection, arena);
     }
 
+    // Moves the target UP or DOWN. If it hits top/bottom arena borders, reverses direction.
     public void moveInDirection(Direction dir, Arena arena) {
 
         if (picture.getY() <= arena.getTop()) {
