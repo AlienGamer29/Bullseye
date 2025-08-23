@@ -45,8 +45,12 @@ public class Target extends Entity implements Collidables {
     public void moveInDirection(Direction dir, Arena arena) {
         Direction newDirection = dir;
 
-        if (picture.getY() <= arena.getTop() || picture.getMaxY() >= arena.getBottom()) {
-            newDirection = currDirection.oppositeDirection();
+        if (picture.getY() <= arena.getTop()) {
+            currDirection = Direction.DOWN;
+        } else if (picture.getMaxY() >= arena.getBottom()) {
+            currDirection = Direction.UP;
+        } else {
+            currDirection = dir;
         }
 
         currDirection = newDirection;
