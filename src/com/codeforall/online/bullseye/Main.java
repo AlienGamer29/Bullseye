@@ -8,8 +8,6 @@ import com.codeforall.simplegraphics.graphics.Canvas;
 public class Main {
     public static void main(String[] args) {
 
-        Canvas.setMaxX(760);
-        Canvas.setMaxY(512);
 
         Arena arena = new Arena();
 
