@@ -4,6 +4,10 @@ package com.codeforall.online.bullseye.playables;
 public class Arrows extends Entity implements Collidables{
 
 
+    public Arrows(int x, int y) {
+        super(x, y);
+    }
+
     @Override
     public int getX() {
         return 0;
