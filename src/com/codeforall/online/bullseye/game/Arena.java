@@ -12,6 +12,7 @@ public class Arena {
     public Arena() {
         picture = new Picture(-5,0, "resources/background.jpeg");
         picture.draw();
+        System.out.println(this.picture.getHeight());
     }
 
 
