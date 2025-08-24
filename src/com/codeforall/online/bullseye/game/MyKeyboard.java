@@ -53,9 +53,9 @@ public class MyKeyboard implements KeyboardHandler {
     @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
         if(keyboardEvent.getKey() == KeyboardEvent.KEY_UP){
-            player.moveUP();
+            player.moveUp();
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_DOWN) {
-            player.moveDOWN();
+            player.moveDown();
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_Q) {
             System.exit(0);
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_S){
