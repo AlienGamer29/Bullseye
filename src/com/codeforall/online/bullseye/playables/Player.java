@@ -1,11 +1,10 @@
 package com.codeforall.online.bullseye.playables;
 
 import com.codeforall.online.bullseye.game.Arena;
-import com.codeforall.online.bullseye.game.MyKeyboard;
 import com.codeforall.simplegraphics.pictures.Picture;
 
 public class Player extends Entity {
-    protected int arrowCounter;
+
 
     private static final int TOP_MARGIN = 80;
     private static final int BOTTOM_MARGIN = 80;
@@ -14,10 +13,11 @@ public class Player extends Entity {
     public Player(int x, int y) {
         super(x, y);
         this.speed = 5;
-        picture = new Picture(50,80, "resources/player_resized.png");
+        picture = new Picture(x, y,"resources/player_resized.png");
+        picture.grow(-10, -10);
         this.picture.draw();
-        this.x = 50;
-        this.y = 80;
+        //this.x = 50;
+        //this.y = 80;
 
     }
 
