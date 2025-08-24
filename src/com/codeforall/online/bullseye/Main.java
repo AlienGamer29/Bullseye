@@ -2,6 +2,7 @@ package com.codeforall.online.bullseye;
 
 import com.codeforall.online.bullseye.game.Arena;
 import com.codeforall.online.bullseye.game.MyKeyboard;
+import com.codeforall.online.bullseye.playables.Player;
 import com.codeforall.simplegraphics.graphics.Canvas;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -14,7 +15,12 @@ public class Main {
 
         Arena arena = new Arena();
 
+
         MyKeyboard myKeyboard = new MyKeyboard();
+
+
+        Player player = new Player(0,0);
+
 
     }
 }
