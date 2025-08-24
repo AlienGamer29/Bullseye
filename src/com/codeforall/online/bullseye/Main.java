@@ -3,6 +3,8 @@ package com.codeforall.online.bullseye;
 import com.codeforall.online.bullseye.game.Arena;
 import com.codeforall.online.bullseye.playables.Target;
 import com.codeforall.online.bullseye.playables.TargetFactory;
+import com.codeforall.online.bullseye.playables.Player;
+import com.codeforall.simplegraphics.graphics.Canvas;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,8 @@ public class Main {
         int numberOfTargets = 10;
 
         Arena arena = new Arena();
+
+        Player player = new Player(0,0);
 
 
         for(int i = 0; i < numberOfTargets; i++) {
@@ -43,5 +47,7 @@ public class Main {
             //target1.update(arena);
             //target2.update(arena);
         }
+
+
     }
 }
