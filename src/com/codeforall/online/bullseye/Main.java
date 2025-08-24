@@ -1,6 +1,7 @@
 package com.codeforall.online.bullseye;
 
 import com.codeforall.online.bullseye.game.Arena;
+import com.codeforall.online.bullseye.game.MyKeyboard;
 import com.codeforall.online.bullseye.playables.Target;
 import com.codeforall.online.bullseye.playables.TargetFactory;
 import com.codeforall.online.bullseye.playables.Player;
@@ -17,6 +18,9 @@ public class Main {
         int numberOfTargets = 10;
 
         Arena arena = new Arena();
+
+        MyKeyboard myKeyboard = new MyKeyboard();
+
 
         Player player = new Player(0,0);
 

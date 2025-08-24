@@ -5,6 +5,7 @@ import com.codeforall.online.bullseye.game.MyKeyboard;
 import com.codeforall.simplegraphics.pictures.Picture;
 
 public class Player extends Entity {
+    protected int arrowCounter;
 
     private static final int TOP_MARGIN = 80;
     private static final int BOTTOM_MARGIN = 80;
@@ -29,6 +30,7 @@ public class Player extends Entity {
         y = Math.max(top, Math.min(newY, bottom));
         picture.translate(0, y - oldY);
     }
+
     public void moveDown(Arena arena) {
         int oldY = y;
         int top = TOP_MARGIN;
@@ -48,6 +50,7 @@ public class Player extends Entity {
         return arrows;
 
     }
+
 
 
 }
