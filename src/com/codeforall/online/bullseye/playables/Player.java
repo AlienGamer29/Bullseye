@@ -9,6 +9,7 @@ public class Player extends Entity {
     private static final int TOP_MARGIN = 80;
     private static final int BOTTOM_MARGIN = 80;
     private static final int ARENA_HEIGHT = 1024;
+    private Picture picture;
 
     public Player(int x, int y) {
         super(x, y);
@@ -23,8 +24,8 @@ public class Player extends Entity {
 
     public void moveUp(Arena  arena) {
         int oldY = y;
-        int top = TOP_MARGIN; //impede o player de passar o arbusto, vou mudar quando tiver os getters
-        int bottom = ARENA_HEIGHT - BOTTOM_MARGIN - picture.getHeight();
+        int top = arena.getTop(); //impede o player de passar o arbusto, vou mudar quando tiver os getters
+        int bottom = ARENA_HEIGHT - arena.getBottom() - picture.getHeight();
         int newY = y - speed; //igual ao top margin mas para baixo
 
         y = Math.max(top, Math.min(newY, bottom));
@@ -33,8 +34,8 @@ public class Player extends Entity {
 
     public void moveDown(Arena arena) {
         int oldY = y;
-        int top = TOP_MARGIN;
-        int bottom = ARENA_HEIGHT - BOTTOM_MARGIN - picture.getHeight();
+        int top = arena.getTop();
+        int bottom = ARENA_HEIGHT - arena.getBottom() - picture.getHeight();
 
         int newY = y + speed;
         y = Math.max(top, Math.min(newY, bottom));
