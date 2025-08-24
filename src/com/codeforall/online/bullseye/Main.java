@@ -1,57 +1,17 @@
 package com.codeforall.online.bullseye;
 
-import com.codeforall.online.bullseye.game.Arena;
-import com.codeforall.online.bullseye.game.MyKeyboard;
-import com.codeforall.online.bullseye.playables.Target;
-import com.codeforall.online.bullseye.playables.TargetFactory;
-import com.codeforall.online.bullseye.playables.Player;
-import com.codeforall.simplegraphics.graphics.Canvas;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.codeforall.online.bullseye.game.Game;
+import com.codeforall.online.bullseye.game.MyKeyboard;
+
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
 
+        Game game = new Game();
 
-        List<Target> targets = new ArrayList<>();
-        int numberOfTargets = 10;
-
-        Arena arena = new Arena();
-
-        MyKeyboard myKeyboard = new MyKeyboard();
-
-
-        Player player = new Player(0,0);
-
-
-        for(int i = 0; i < numberOfTargets; i++) {
-            targets.add(TargetFactory.createTarget());
-        }
-
-
-
-        //Target target = new Target(850, 594);
-        //Target target1 = new Target(850, 250);
-        //Target target2 = new Target(800, 250);
-
-
-        while (true) {
-
-            Thread.sleep(16);
-
-
-            for (Target t : targets) {
-                t.update(arena);
-            }
-
-
-
-            //target.update(arena);
-            //target1.update(arena);
-            //target2.update(arena);
-        }
-
+        game.init();
+        game.start();
 
     }
 }
