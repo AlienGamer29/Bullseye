@@ -13,7 +13,7 @@ public class Player extends Entity {
     public void moveUP(){
     }
 
-    public void shoot(Arrows arrows) {
+    public Arrows shoot() {
         arrowCounter--;
     }
 
