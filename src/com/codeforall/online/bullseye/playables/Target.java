@@ -7,17 +7,17 @@ public class Target extends Entity implements Collidables {
 
     private Direction currDirection;
 
-    public Target(int x, int y) {
+    public Target(int x, int y, Direction direction) {
         super(x, y);
 
         // Create and draw the target picture, resize and recenter
-        picture = new Picture(x, y, "resources/target.png");
-        picture.grow(-200, -200);
-        picture.translate(-200, -200);
+        this.picture = new Picture(x, y, "resources/target.png");
+        picture.grow(-180, -180);
+        picture.translate(-180, -180);
         picture.draw();
 
-        speed = 1;
-        currDirection = Direction.values()[(int) (Math.random() * Direction.values().length)];
+        this.speed = 1;
+        this.currDirection = direction;
     }
 
     //Getters for picture borders
