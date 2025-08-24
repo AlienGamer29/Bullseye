@@ -25,7 +25,6 @@ public class Arena {
         Canvas.setMaxY(height - 10);
 
         picture.draw();
-        System.out.println(this.picture.getHeight());
     }
 
     public int getTop() {
