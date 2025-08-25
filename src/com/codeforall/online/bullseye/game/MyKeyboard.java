@@ -13,12 +13,12 @@ public class MyKeyboard implements KeyboardHandler {
     private Arena arena;
     private Game game;
 
-    public MyKeyboard(Player player, Arena arena) { // associar o Player dentro do MyKeyboard
+    public MyKeyboard(Player player, Arena arena, Game game) { // associar o Player dentro do MyKeyboard
         myKeyboard = new Keyboard(this);
 
         this.player = player;
         this.arena = arena;
-
+        this.game = game;
         initKeys();
     }
 
@@ -49,7 +49,7 @@ public class MyKeyboard implements KeyboardHandler {
 
         KeyboardEvent release = new KeyboardEvent();
         release.setKey(KeyboardEvent.KEY_SPACE);
-        release.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
+        release.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
 
         myKeyboard.addEventListener(release);
     }
@@ -64,14 +64,57 @@ public class MyKeyboard implements KeyboardHandler {
             System.exit(0);
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_S){
 
+        } else if(keyboardEvent.getKey() == KeyboardEvent.KEY_SPACE) {
+            game.playerShoot();
         }
     }
 
     @Override
     public void keyReleased(KeyboardEvent keyboardEvent) {
-        if(keyboardEvent.getKey() == KeyboardEvent.KEY_SPACE) {
-            game.playerShoot();
-        }
+
     }
 }
 
+
+/*
+import org.academiadecodigo.simplegraphics.keyboard.*;
+
+public class Game implements KeyboardHandler {
+
+    private boolean started = false;
+
+    public static void main(String[] args) {
+        Game game = new Game();
+        game.initKeys();
+    }
+
+    private void initKeys() {
+        Keyboard keyboard = new Keyboard(this);
+
+        KeyboardEvent startEvent = new KeyboardEvent();
+        startEvent.setKey(KeyboardEvent.KEY_SPACE);
+        startEvent.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+
+        keyboard.addEventListener(startEvent);
+    }
+
+    @Override
+    public void keyPressed(KeyboardEvent e) {
+        if (!started && e.getKey() == KeyboardEvent.KEY_SPACE) {
+            started = true;
+            startGame();
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyboardEvent e) {
+        // Not needed for this example
+    }
+
+    private void startGame() {
+        System.out.println("Game started!");
+        // Your game logic here
+    }
+}
+
+ */
