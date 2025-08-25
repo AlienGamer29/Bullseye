@@ -8,7 +8,7 @@ public class Arena {
     private int width;
     private int height;
     private Picture picture;
-    private final int BUSHPADDING = 34;
+    private final int BUSHPADDING = 50;
 
     public Arena() {
 
@@ -27,11 +27,23 @@ public class Arena {
         picture.draw();
     }
 
+    public int getHeight() {
+        return height;
+    }
+
     public int getTop() {
-        return picture.getY() + BUSHPADDING;
+        return picture.getY();
     }
 
     public int getBottom() {
+        return picture.getMaxY();
+    }
+
+    public int getTopBush() {
+        return picture.getY() + BUSHPADDING;
+    }
+
+    public int getBottomBush() {
         return picture.getMaxY() - BUSHPADDING;
     }
 
