@@ -19,6 +19,8 @@ public class Game {
     private int numberOfTargets = 10;
     private int delay = 16;
     private int maxArrows = 30;
+    private Text scoreText;
+    private Text arrowsText;
 
     public void init() {
 
@@ -26,6 +28,9 @@ public class Game {
         player = new Player(arena.getBUSHPADDING(), 384);
 
         myKeyboard = new MyKeyboard(player, arena, this);
+
+        scoreDisplay(score);
+        maxArrowsDisplay(maxArrows);
 
 
         for(int i = 0; i < numberOfTargets; i++) {
@@ -36,7 +41,7 @@ public class Game {
 
     public void start() throws InterruptedException {
 
-        while (true) {
+        while (!targets.isEmpty() && (maxArrows > 0 || !arrows.isEmpty())) {
 
             Thread.sleep(delay);
 
@@ -44,14 +49,21 @@ public class Game {
             moveAllTargets();
             checkCollision();
             overTheBush();
-            scoreDisplay(score);
-            maxArrowsDisplay(maxArrows);
-            System.out.println(arrows.size());
+            updateHUD();
+        }
+
+        if(targets.isEmpty()) {
+            // CRIAIR MENSAGEM NO ECRA "YOU WIN"
+        } else if (maxArrows <= 0 && arrows.isEmpty()) {
+            // CRIAR MENSAGEM DE GAME OVER NO ECRA
         }
 
     }
 
     public void playerShoot() {
+        if (maxArrows <= 0) {
+            return;
+        }
         arrows.add(player.shoot());
         maxArrows--;
     }
@@ -104,19 +116,23 @@ public class Game {
 
 
     public void scoreDisplay(int score) {
-        Text sc = new Text(arena.getRight()-100, 10, "Score: " + score);
-        sc.grow(45, 17);
-        sc.setColor(Color.WHITE);
-        sc.draw();
+        scoreText = new Text(arena.getRight()-100, 10, "Score: " + score);
+        scoreText.grow(45, 17);
+        scoreText.setColor(Color.WHITE);
+        scoreText.draw();
     }
 
     public void maxArrowsDisplay(int maxArrows) {
 
-        Text sc = new Text(arena.getLeft()+80, 10, "Arrows left: " + maxArrows);
-        sc.grow(45, 17);
+        arrowsText = new Text(arena.getLeft()+80, 10, "Arrows left: " + maxArrows);
+        arrowsText.grow(45, 17);
+        arrowsText.draw();
 
-        sc.draw();
+    }
 
+    public void updateHUD() {
+        scoreText.setText("Score: " + score);
+        arrowsText.setText("Arrows left: " + maxArrows);
     }
 
 
