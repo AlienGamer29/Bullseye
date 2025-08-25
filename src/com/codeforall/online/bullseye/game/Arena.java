@@ -25,7 +25,6 @@ public class Arena {
         Canvas.setMaxY(height - 10);
 
         picture.draw();
-        System.out.println(this.picture.getHeight());
     }
 
     public int getTop() {
@@ -36,5 +35,15 @@ public class Arena {
         return picture.getMaxY() - BUSHPADDING;
     }
 
+    public int getRight() {
+        return picture.getMaxX();
+    }
 
+    public int getLeft() {
+        return picture.getX();
+    }
+
+    public int getBUSHPADDING() {
+        return BUSHPADDING;
+    }
 }

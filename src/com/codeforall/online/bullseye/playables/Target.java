@@ -11,7 +11,7 @@ public class Target extends Entity implements Collidables {
         super(x, y);
 
         // Create and draw the target picture, resize and recenter
-        this.picture = new Picture(x, y, "resources/target.png");
+        this.picture = new Picture(x, y, "resources/target309x314.png");
         picture.grow(-180, -180);
         picture.translate(-180, -180);
         picture.draw();
@@ -39,6 +39,10 @@ public class Target extends Entity implements Collidables {
     @Override
     public int getMaxY() {
         return picture.getMaxY();
+    }
+
+    public void removePicture() {
+        picture.delete();
     }
 
 
