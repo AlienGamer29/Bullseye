@@ -27,6 +27,7 @@ public class Game {
 
         myKeyboard = new MyKeyboard(player, arena, this);
 
+
         for(int i = 0; i < numberOfTargets; i++) {
             targets.add(TargetFactory.createTarget());
         }
@@ -72,9 +73,9 @@ public class Game {
 
         for (Arrows a : arrows) {
             for (Target t : targets) {
-                if (a.getMaxX() > t.getX() && a.getMaxY() > t.getY()
-                        && a.getY() < t.getMaxY() && a.getX() < t.getMaxX()) {
+                if (a.getMaxX() > t.getX() && a.getMaxY() > t.getY() && a.getY() < t.getMaxY()) {
                     t.removePicture();
+                    a.removePicture();
                     a.removePicture();
                     aToRemove.add(a);
                     tToRemove.add(t);
@@ -103,7 +104,6 @@ public class Game {
 
 
     public void scoreDisplay(int score) {
-
         Text sc = new Text(arena.getRight()-100, 10, "Score: " + score);
         sc.grow(45, 17);
         sc.setColor(Color.WHITE);
