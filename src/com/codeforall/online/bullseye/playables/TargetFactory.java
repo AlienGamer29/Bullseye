@@ -1,8 +1,11 @@
 package com.codeforall.online.bullseye.playables;
 
+import com.codeforall.online.bullseye.game.Arena;
+
 public class TargetFactory {
 
-    private static final int[] X_POS = {850, 780};
+
+    private static final int[] X_POS = {886, 808};
     private static final int[] Y_POS = {34, 174, 314, 454, 594};
     private static int indexX = 0;
     private static int indexY = 0;

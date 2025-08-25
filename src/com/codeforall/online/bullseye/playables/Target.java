@@ -12,8 +12,8 @@ public class Target extends Entity implements Collidables {
 
         // Create and draw the target picture, resize and recenter
         this.picture = new Picture(x, y, "resources/target309x314.png");
-        picture.grow(-180, -180);
-        picture.translate(-180, -180);
+        picture.grow(-118, -110);
+        picture.translate(-118, -110);
         picture.draw();
 
         this.speed = 1;
@@ -45,18 +45,18 @@ public class Target extends Entity implements Collidables {
         picture.delete();
     }
 
-
     // Updates target position: moves in the current direction and checks arena bounds
     public void update(Arena arena) {
         moveInDirection(currDirection, arena);
+
     }
 
     // Moves the target UP or DOWN. If it hits top/bottom arena borders, reverses direction.
     public void moveInDirection(Direction dir, Arena arena) {
 
-        if (picture.getY() <= arena.getTop()) {
+        if (picture.getY() <= arena.getTopBush()) {
             currDirection = Direction.DOWN;
-        } else if (picture.getMaxY() >= arena.getBottom()) {
+        } else if (picture.getMaxY() >= arena.getBottomBush()) {
             currDirection = Direction.UP;
         } else {
             currDirection = dir;
