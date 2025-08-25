@@ -3,7 +3,6 @@ package com.codeforall.online.bullseye.game;
 import com.codeforall.online.bullseye.playables.*;
 import com.codeforall.simplegraphics.graphics.Color;
 import com.codeforall.simplegraphics.graphics.Text;
-import com.codeforall.simplegraphics.keyboard.Keyboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,7 @@ public class Game {
     private List<Target> targets = new ArrayList<>();
     private Player player;
     private TargetFactory targetFactory;
-    private int score = 999;
+    private int score = 0;
     private int numberOfTargets = 10;
     private int delay = 16;
     private int maxArrows = 30;
@@ -26,7 +25,7 @@ public class Game {
         arena = new Arena();
         player = new Player(arena.getBUSHPADDING(), 384);
 
-        myKeyboard = new MyKeyboard(player, arena);
+        myKeyboard = new MyKeyboard(player, arena, this);
 
         for(int i = 0; i < numberOfTargets; i++) {
             targets.add(TargetFactory.createTarget());
@@ -40,12 +39,13 @@ public class Game {
 
             Thread.sleep(delay);
 
-            //moveAllArrows();
+            moveAllArrows();
             moveAllTargets();
-            //checkCollision();
-            //overTheBush();
+            checkCollision();
+            overTheBush();
             scoreDisplay(score);
             maxArrowsDisplay(maxArrows);
+            System.out.println(arrows.size());
         }
 
     }
@@ -62,31 +62,43 @@ public class Game {
     }
     public void moveAllArrows(){
         for (Arrows a : arrows) {
-            //a.update(arena);
+            a.update(arena);
         }
     }
 
     public void checkCollision() {
+        List<Arrows> aToRemove = new ArrayList<>();
+        List<Target> tToRemove = new ArrayList<>();
+
         for (Arrows a : arrows) {
             for (Target t : targets) {
-                if (a.getMaxX() > t.getX() && a.getMaxY() > t.getY() && a.getY() < t.getMaxY()) {
+                if (a.getMaxX() > t.getX() && a.getMaxY() > t.getY()
+                        && a.getY() < t.getMaxY() && a.getX() < t.getMaxX()) {
                     t.removePicture();
-                    //a.removePicture();
-                    targets.remove(t);
-                    arrows.remove(a);
+                    a.removePicture();
+                    aToRemove.add(a);
+                    tToRemove.add(t);
                     score += 10;
+                    break;
                 }
             }
         }
+
+        targets.removeAll(tToRemove);
+        arrows.removeAll(aToRemove);
     }
 
+
     public void overTheBush() {
+        List<Arrows> toRemove = new ArrayList<>();
+
         for (Arrows a: arrows) {
             if (a.getX() > arena.getRight()) {
-                //a.removePicture();
-                arrows.remove(a);
+                a.removePicture();
+                toRemove.add(a);
             }
         }
+        arrows.removeAll(toRemove);
     }
 
 
