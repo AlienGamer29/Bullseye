@@ -16,7 +16,7 @@ public class Game {
     private List<Target> targets = new ArrayList<>();
     private Player player;
     private TargetFactory targetFactory;
-    private int score = 999;
+    private int score = 0;
     private int numberOfTargets = 10;
     private int delay = 16;
     private int maxArrows = 30;
@@ -26,7 +26,8 @@ public class Game {
         arena = new Arena();
         player = new Player(arena.getBUSHPADDING(), 384);
 
-        myKeyboard = new MyKeyboard(player, arena);
+        myKeyboard = new MyKeyboard(player, arena, this);
+
 
         for(int i = 0; i < numberOfTargets; i++) {
             targets.add(TargetFactory.createTarget());
@@ -40,10 +41,10 @@ public class Game {
 
             Thread.sleep(delay);
 
-            //moveAllArrows();
+            moveAllArrows();
             moveAllTargets();
-            //checkCollision();
-            //overTheBush();
+            checkCollision();
+            overTheBush();
             scoreDisplay(score);
             maxArrowsDisplay(maxArrows);
         }
@@ -62,7 +63,7 @@ public class Game {
     }
     public void moveAllArrows(){
         for (Arrows a : arrows) {
-            //a.update(arena);
+            a.update(arena);
         }
     }
 
@@ -71,7 +72,7 @@ public class Game {
             for (Target t : targets) {
                 if (a.getMaxX() > t.getX() && a.getMaxY() > t.getY() && a.getY() < t.getMaxY()) {
                     t.removePicture();
-                    //a.removePicture();
+                    a.removePicture();
                     targets.remove(t);
                     arrows.remove(a);
                     score += 10;
@@ -83,7 +84,7 @@ public class Game {
     public void overTheBush() {
         for (Arrows a: arrows) {
             if (a.getX() > arena.getRight()) {
-                //a.removePicture();
+                a.removePicture();
                 arrows.remove(a);
             }
         }
@@ -91,7 +92,6 @@ public class Game {
 
 
     public void scoreDisplay(int score) {
-
         Text sc = new Text(arena.getRight()-100, 10, "Score: " + score);
         sc.grow(45, 17);
         sc.setColor(Color.WHITE);
