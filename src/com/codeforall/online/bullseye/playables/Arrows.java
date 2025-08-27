@@ -11,7 +11,7 @@ public class Arrows extends Entity implements Collidables{
         picture.grow(-50, -25);
         picture.translate(-50, -25);
         picture.draw();
-        speed = 2;
+        speed = 4;
     }
 
     public void removePicture(){

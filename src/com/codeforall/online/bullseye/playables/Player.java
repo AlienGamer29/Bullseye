@@ -8,7 +8,7 @@ public class Player extends Entity {
 
     public Player(int x, int y) {
         super(x, y);
-        this.speed = 5;
+        this.speed = 10;
 
         int shrinkX = 10;
         int shrinkY = 10;
