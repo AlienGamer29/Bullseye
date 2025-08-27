@@ -21,6 +21,9 @@ public class Game {
     private int maxArrows = 30;
     private Text scoreText;
     private Text arrowsText;
+    private final int cooldownMs = 600;
+    private long lastShotMs = -cooldownMs;
+
 
     public void init() {
 
@@ -64,8 +67,13 @@ public class Game {
         if (maxArrows <= 0) {
             return;
         }
+        long now = System.currentTimeMillis();
+        if (now - lastShotMs < cooldownMs) {
+            return;
+        }
         arrows.add(player.shoot());
         maxArrows--;
+        lastShotMs = now;
     }
 
     public void moveAllTargets() {

@@ -13,6 +13,8 @@ public class MyKeyboard implements KeyboardHandler {
     private Arena arena;
     private Game game;
 
+    private boolean spaceHeld = false;
+
     public MyKeyboard(Player player, Arena arena, Game game) { // associar o Player dentro do MyKeyboard
         myKeyboard = new Keyboard(this);
 
@@ -47,15 +49,22 @@ public class MyKeyboard implements KeyboardHandler {
 
         myKeyboard.addEventListener(quit);
 
-        KeyboardEvent release = new KeyboardEvent();
-        release.setKey(KeyboardEvent.KEY_SPACE);
-        release.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        KeyboardEvent spacePress = new KeyboardEvent();
+        spacePress.setKey(KeyboardEvent.KEY_SPACE);
+        spacePress.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
 
-        myKeyboard.addEventListener(release);
+        myKeyboard.addEventListener(spacePress);
+
+        KeyboardEvent spaceRelease = new KeyboardEvent();
+        spaceRelease.setKey(KeyboardEvent.KEY_SPACE);
+        spaceRelease.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
+
+        myKeyboard.addEventListener(spaceRelease);
     }
 
     @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
+        int key = keyboardEvent.getKey();
         if(keyboardEvent.getKey() == KeyboardEvent.KEY_UP){
             player.moveUp(arena);
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_DOWN) {
@@ -65,12 +74,18 @@ public class MyKeyboard implements KeyboardHandler {
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_S){
 
         } else if(keyboardEvent.getKey() == KeyboardEvent.KEY_SPACE) {
-            game.playerShoot();
+            if (!spaceHeld) {
+                spaceHeld = true;
+                game.playerShoot();
+            }
         }
     }
 
     @Override
     public void keyReleased(KeyboardEvent keyboardEvent) {
+        if (keyboardEvent.getKey() == KeyboardEvent.KEY_SPACE){
+            spaceHeld = false;
+        }
 
     }
 }

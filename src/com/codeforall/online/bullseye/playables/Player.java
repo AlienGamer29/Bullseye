@@ -6,38 +6,42 @@ import com.codeforall.simplegraphics.pictures.Picture;
 public class Player extends Entity {
 
 
-    private static final int TOP_MARGIN = 80;
-    private static final int BOTTOM_MARGIN = 80;
-    private static final int ARENA_HEIGHT = 1024;
-
     public Player(int x, int y) {
         super(x, y);
-        this.speed = 5;
+        this.speed = 10;
+
+        int shrinkX = 10;
+        int shrinkY = 10;
+
         picture = new Picture(x, y,"resources/player_resized.png");
-        picture.grow(-10, -10);
+        picture.grow(-shrinkX, -shrinkY);
+        picture.translate(-shrinkX, -shrinkY);
         this.picture.draw();
-        //this.x = 50;
-        //this.y = 80;
+        this.x = x;
+        this.y = y;
 
     }
 
     public void moveUp(Arena  arena) {
         int oldY = y;
-        int top = TOP_MARGIN; //impede o player de passar o arbusto, vou mudar quando tiver os getters
-        int bottom = ARENA_HEIGHT - BOTTOM_MARGIN - picture.getHeight();
-        int newY = y - speed; //igual ao top margin mas para baixo
 
-        y = Math.max(top, Math.min(newY, bottom));
+        int minY = arena.getTopBush(); //impede o player de passar o arbusto
+        int maxY = arena.getBottomBush() - picture.getHeight(); //igual ao top margin mas para baixo
+
+        int newY = y - speed;
+        y = Math.max(minY, Math.min(newY, maxY));
+
         picture.translate(0, y - oldY);
     }
 
     public void moveDown(Arena arena) {
         int oldY = y;
-        int top = TOP_MARGIN;
-        int bottom = ARENA_HEIGHT - BOTTOM_MARGIN - picture.getHeight();
+
+        int minY = arena.getTopBush();
+        int maxY = arena.getBottomBush() - picture.getHeight();
 
         int newY = y + speed;
-        y = Math.max(top, Math.min(newY, bottom));
+        y = Math.max(minY, Math.min(newY, maxY));
 
         picture.translate(0, y - oldY);
     }
