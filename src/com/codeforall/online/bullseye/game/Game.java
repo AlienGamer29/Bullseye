@@ -3,6 +3,7 @@ package com.codeforall.online.bullseye.game;
 import com.codeforall.online.bullseye.playables.*;
 import com.codeforall.simplegraphics.graphics.Color;
 import com.codeforall.simplegraphics.graphics.Text;
+import com.codeforall.simplegraphics.pictures.Picture;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +19,12 @@ public class Game {
     private int score = 0;
     private int numberOfTargets = 10;
     private int delay = 16;
-    private int maxArrows = 30;
+    private int maxArrows = 10;
     private Text scoreText;
     private Text arrowsText;
     private final int cooldownMs = 600;
     private long lastShotMs = -cooldownMs;
+    private Picture gameOver;
 
 
     public void init() {
@@ -42,6 +44,15 @@ public class Game {
 
     }
 
+    private void showGameOver() {
+        int w = arena.getRight() - arena.getLeft();
+        int h = arena.getBottom() - arena.getTop();
+
+        gameOver = new Picture(w,h);
+        gameOver.translate(arena.getLeft(), arena.getTop());
+        gameOver.draw();
+    }
+
     public void start() throws InterruptedException {
 
         while (!targets.isEmpty() && (maxArrows > 0 || !arrows.isEmpty())) {
@@ -58,7 +69,7 @@ public class Game {
         if(targets.isEmpty()) {
             // CRIAIR MENSAGEM NO ECRA "YOU WIN"
         } else if (maxArrows <= 0 && arrows.isEmpty()) {
-            // CRIAR MENSAGEM DE GAME OVER NO ECRA
+            showGameOver();
         }
 
     }
