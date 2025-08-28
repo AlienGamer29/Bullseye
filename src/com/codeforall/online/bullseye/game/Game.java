@@ -30,7 +30,7 @@ public class Game {
     public void init() {
 
         arena = new Arena();
-        player = new Player(arena.getBUSHPADDING(), 384);
+        player = new Player(arena.getBUSHPADDING(), arena.getHeight()/2);
 
         myKeyboard = new MyKeyboard(player, arena, this);
 
@@ -38,17 +38,17 @@ public class Game {
         maxArrowsDisplay(maxArrows);
 
 
-        for(int i = 0; i < numberOfTargets; i++) {
+        for (int i = 0; i < numberOfTargets; i++) {
             targets.add(TargetFactory.createTarget());
         }
 
     }
 
     private void showGameOver() {
-        int w = arena.getRight() - arena.getLeft();
-        int h = arena.getBottom() - arena.getTop();
+        int w = arena.getWidth();
+        int h = arena.getHeight();
 
-        gameOver = new Picture(w,h);
+        gameOver = new Picture(w, h);
         gameOver.translate(arena.getLeft(), arena.getTop());
         gameOver.draw();
     }
@@ -66,8 +66,8 @@ public class Game {
             updateHUD();
         }
 
-        if(targets.isEmpty()) {
-            // CRIAIR MENSAGEM NO ECRA "YOU WIN"
+        if (targets.isEmpty()) {
+            showGameOver();
         } else if (maxArrows <= 0 && arrows.isEmpty()) {
             showGameOver();
         }
@@ -92,7 +92,8 @@ public class Game {
             t.update(arena);
         }
     }
-    public void moveAllArrows(){
+
+    public void moveAllArrows() {
         for (Arrows a : arrows) {
             a.update(arena);
         }
@@ -106,7 +107,6 @@ public class Game {
             for (Target t : targets) {
                 if (a.getMaxX() > t.getX() && a.getMaxY() > t.getY() && a.getY() < t.getMaxY()) {
                     t.removePicture();
-                    a.removePicture();
                     a.removePicture();
                     aToRemove.add(a);
                     tToRemove.add(t);
@@ -135,7 +135,7 @@ public class Game {
 
 
     public void scoreDisplay(int score) {
-        scoreText = new Text(arena.getRight()-100, 10, "Score: " + score);
+        scoreText = new Text(arena.getRight() - 100, 10, "Score: " + score);
         scoreText.grow(45, 17);
         scoreText.setColor(Color.WHITE);
         scoreText.draw();
@@ -143,7 +143,7 @@ public class Game {
 
     public void maxArrowsDisplay(int maxArrows) {
 
-        arrowsText = new Text(arena.getLeft()+80, 10, "Arrows left: " + maxArrows);
+        arrowsText = new Text(arena.getLeft() + 80, 10, "Arrows left: " + maxArrows);
         arrowsText.grow(45, 17);
         arrowsText.draw();
 
@@ -153,13 +153,8 @@ public class Game {
         scoreText.setText("Score: " + score);
         arrowsText.setText("Arrows left: " + maxArrows);
     }
-
-
-
-    // próximas preocupações: imagem game over, fazer aparecer no ecrã o número de setas que temos e o score, menu
-    // conseguimos inserir texto por cima das imagens, por exemplo por cima do arbustos? texto constantemente atualizado à medida que o checkcolision funciona e decrementamos as setas no player.shoot
-
-
-
-
 }
+
+
+
+
