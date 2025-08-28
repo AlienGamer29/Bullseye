@@ -31,6 +31,10 @@ public class Arena {
         return height;
     }
 
+    public int getWidth() {
+        return width;
+    }
+
     public int getTop() {
         return picture.getY();
     }
