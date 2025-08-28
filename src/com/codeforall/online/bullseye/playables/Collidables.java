@@ -6,5 +6,6 @@ public interface Collidables {
     int getY();
     int getMaxX();
     int getMaxY();
+    void removePicture();
 
 }
