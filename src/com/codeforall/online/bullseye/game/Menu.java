@@ -36,5 +36,6 @@ public class Menu {
         myKeyboard.keyPressed(KeyboardEvent.KEY_S);
     }
     public void init(){
+
     }
 }
