@@ -21,11 +21,15 @@ public class Game {
     private int maxArrows = 30;
     private Text scoreText;
     private Text arrowsText;
+    private Text menuText;
     private final int cooldownMs = 600;
     private long lastShotMs = -cooldownMs;
+    private Menu menu;
 
 
     public void init() {
+
+        menu = new Menu(MyKeyboard myKeyboard);
 
         arena = new Arena();
         player = new Player(arena.getBUSHPADDING(), 384);
@@ -36,11 +40,11 @@ public class Game {
         maxArrowsDisplay(maxArrows);
 
 
-        for(int i = 0; i < numberOfTargets; i++) {
+        for (int i = 0; i < numberOfTargets; i++) {
             targets.add(TargetFactory.createTarget());
         }
+       }
 
-    }
 
     public void start() throws InterruptedException {
 
@@ -56,8 +60,8 @@ public class Game {
         }
 
         if(targets.isEmpty()) {
-            // CRIAIR MENSAGEM NO ECRA "YOU WIN"
-        } else if (maxArrows <= 0 && arrows.isEmpty()) {
+            // CRIAR MENSAGEM NO ECRA "YOU WIN"
+        } else if (maxArrows <= 0 && arrows.isEmpty()) { // talvez apenas 1 das condições?
             // CRIAR MENSAGEM DE GAME OVER NO ECRA
         }
 

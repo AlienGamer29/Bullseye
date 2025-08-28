@@ -65,14 +65,14 @@ public class MyKeyboard implements KeyboardHandler {
     @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
         int key = keyboardEvent.getKey();
-        if(keyboardEvent.getKey() == KeyboardEvent.KEY_UP){
+        if(keyboardEvent.getKey() == KeyboardEvent.KEY_UP) {
             player.moveUp(arena);
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_DOWN) {
             player.moveDown(arena);
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_Q) {
             System.exit(0);
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_S){
-
+//????
         } else if(keyboardEvent.getKey() == KeyboardEvent.KEY_SPACE) {
             if (!spaceHeld) {
                 spaceHeld = true;

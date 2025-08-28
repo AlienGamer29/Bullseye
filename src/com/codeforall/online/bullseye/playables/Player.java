@@ -22,7 +22,7 @@ public class Player extends Entity {
 
     }
 
-    public void moveUp(Arena  arena) {
+    public void moveUp(Arena arena) {
         int oldY = y;
 
         int minY = arena.getTopBush(); //impede o player de passar o arbusto
