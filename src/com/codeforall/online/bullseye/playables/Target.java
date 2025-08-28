@@ -3,6 +3,8 @@ package com.codeforall.online.bullseye.playables;
 import com.codeforall.online.bullseye.game.Arena;
 import com.codeforall.simplegraphics.pictures.Picture;
 
+import static com.codeforall.online.bullseye.game.Game.PREFIX;
+
 public class Target extends Entity implements Collidables {
 
     private Direction currDirection;

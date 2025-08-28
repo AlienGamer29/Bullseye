@@ -3,7 +3,8 @@ package com.codeforall.online.bullseye.game;
 import com.codeforall.simplegraphics.graphics.Canvas;
 import com.codeforall.simplegraphics.pictures.Picture;
 
-import static java.text.NumberFormat.Field.PREFIX;
+import static com.codeforall.online.bullseye.game.Game.PREFIX;
+
 
 public class Arena {
 
@@ -11,7 +12,7 @@ public class Arena {
     private int height;
     private Picture picture;
     private final int BUSHPADDING = 50;
-    private final String PREFIX = "resources/";
+
 
 
     public Arena() {

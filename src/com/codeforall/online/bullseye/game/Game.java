@@ -25,6 +25,7 @@ public class Game {
     private final int cooldownMs = 600;
     private long lastShotMs = -cooldownMs;
     private Picture gameOver;
+    public static final String PREFIX = "resources/";
 
 
     public void init() {
