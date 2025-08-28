@@ -5,9 +5,10 @@ import com.codeforall.simplegraphics.pictures.Picture;
 
 public class Arrows extends Entity implements Collidables{
 
+
     public Arrows(int x, int y) {
         super(x, y);
-        this.picture = new Picture(x, y, "resources/arrowright_215x83.png");
+        this.picture = new Picture(x, y, PREFIX + "arrowright_215x83.png");
         picture.grow(-50, -25);
         picture.translate(-50, -25);
         picture.draw();

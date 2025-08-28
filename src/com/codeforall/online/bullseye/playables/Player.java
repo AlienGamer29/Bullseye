@@ -13,12 +13,10 @@ public class Player extends Entity {
         int shrinkX = 10;
         int shrinkY = 10;
 
-        picture = new Picture(x, y,"resources/player_resized.png");
+        picture = new Picture(x, y,PREFIX + "player_resized.png");
         picture.grow(-shrinkX, -shrinkY);
         picture.translate(-shrinkX, -shrinkY);
         this.picture.draw();
-        this.x = x;
-        this.y = y;
 
     }
 

@@ -11,7 +11,7 @@ public class Target extends Entity implements Collidables {
         super(x, y);
 
         // Create and draw the target picture, resize and recenter
-        this.picture = new Picture(x, y, "resources/target309x314.png");
+        this.picture = new Picture(x, y, PREFIX + "target309x314.png");
         picture.grow(-118, -110);
         picture.translate(-118, -110);
         picture.draw();
