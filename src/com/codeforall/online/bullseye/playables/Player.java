@@ -16,7 +16,7 @@ public class Player extends Entity {
         picture = new Picture(x, y,"resources/player_resized.png");
         picture.grow(-shrinkX, -shrinkY);
         picture.translate(-shrinkX, -shrinkY);
-        this.picture.draw();
+        displayPlayer();
         this.x = x;
         this.y = y;
 
@@ -55,6 +55,9 @@ public class Player extends Entity {
 
     }
 
+    public void displayPlayer() {
+        this.picture.draw();
+    }
 
 
 }
