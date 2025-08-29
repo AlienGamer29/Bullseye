@@ -12,6 +12,7 @@ public class MyKeyboard implements KeyboardHandler {
     private Player player;
     private Arena arena;
     private Game game;
+    private GameState gameState;
 
     private boolean spaceHeld = false;
 
@@ -72,7 +73,7 @@ public class MyKeyboard implements KeyboardHandler {
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_Q) {
             System.exit(0);
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_S){
-
+            game.initGame();
         } else if(keyboardEvent.getKey() == KeyboardEvent.KEY_SPACE) {
             if (!spaceHeld) {
                 spaceHeld = true;

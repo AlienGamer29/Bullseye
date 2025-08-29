@@ -24,7 +24,7 @@ public class Arena {
         Canvas.setMaxX(width - 10);
         Canvas.setMaxY(height - 10);
 
-        picture.draw();
+        displayArena(true);
     }
 
     public int getHeight() {
@@ -57,6 +57,14 @@ public class Arena {
 
     public int getBUSHPADDING() {
         return BUSHPADDING;
+    }
+
+    public void displayArena(Boolean show) {
+        if (true) {
+            picture.draw();
+        } else {
+            picture.delete();
+        }
     }
 
 
