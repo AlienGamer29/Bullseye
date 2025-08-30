@@ -1,6 +1,5 @@
 package com.codeforall.online.bullseye.game;
 
-import com.codeforall.online.bullseye.playables.Arrows;
 import com.codeforall.online.bullseye.playables.Player;
 import com.codeforall.simplegraphics.keyboard.Keyboard;
 import com.codeforall.simplegraphics.keyboard.KeyboardEvent;
