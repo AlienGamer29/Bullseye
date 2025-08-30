@@ -1,6 +1,7 @@
 package com.codeforall.online.bullseye.playables;
 
 import com.codeforall.online.bullseye.game.Arena;
+import com.codeforall.online.bullseye.playables.arrows.Arrows;
 import com.codeforall.simplegraphics.pictures.Picture;
 
 import static com.codeforall.online.bullseye.game.Game.PREFIX;

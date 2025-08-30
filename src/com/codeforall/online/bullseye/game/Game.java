@@ -1,6 +1,9 @@
 package com.codeforall.online.bullseye.game;
 
 import com.codeforall.online.bullseye.playables.*;
+import com.codeforall.online.bullseye.playables.arrows.Arrows;
+import com.codeforall.online.bullseye.playables.target.Target;
+import com.codeforall.online.bullseye.playables.target.TargetFactory;
 import com.codeforall.simplegraphics.graphics.Color;
 import com.codeforall.simplegraphics.graphics.Text;
 import com.codeforall.simplegraphics.pictures.Picture;
@@ -79,6 +82,7 @@ public class Game {
     private void showGameOver() {
         arena.displayArena(false);
         gameState.displayGameOver();
+        scoreDisplay(score);
     }
 
     public void playerShoot() {
