@@ -1,6 +1,4 @@
-package com.codeforall.online.bullseye.playables;
-
-import com.codeforall.online.bullseye.game.Arena;
+package com.codeforall.online.bullseye.playables.target;
 
 public class TargetFactory {
 

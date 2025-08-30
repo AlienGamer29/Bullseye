@@ -1,9 +1,11 @@
-package com.codeforall.online.bullseye.playables;
+package com.codeforall.online.bullseye.playables.arrows;
 
 import com.codeforall.online.bullseye.game.Arena;
+import com.codeforall.online.bullseye.playables.Collidables;
+import com.codeforall.online.bullseye.playables.Entity;
 import com.codeforall.simplegraphics.pictures.Picture;
 
-public class Arrows extends Entity implements Collidables{
+public class Arrows extends Entity implements Collidables {
 
 
     public String arrowPath;
