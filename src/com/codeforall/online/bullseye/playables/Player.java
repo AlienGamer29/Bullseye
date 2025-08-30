@@ -49,8 +49,7 @@ public class Player extends Entity {
         int arrowX = x + picture.getWidth();// spawn ao lado direito do player
         int arrowY = y + picture.getHeight() / 2; // spawn ao centro da imagem do player
 
-        Arrows arrows = new Arrows(arrowX, arrowY);
-        return arrows;
+        return new Arrows(arrowX, arrowY);
 
     }
 
