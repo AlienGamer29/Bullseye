@@ -17,41 +17,46 @@ public class Game {
     private Player player;
     private TargetFactory targetFactory;
     private int score = 0;
-    private int numberOfTargets = 10;
-    private int delay = 16;
+    private final int numberOfTargets = 10;
+    private final int delay = 16;
     private int maxArrows = 10;
     private Text scoreText;
     private Text arrowsText;
     private final int cooldownMs = 600;
     private long lastShotMs = -cooldownMs;
     private Picture gameOver;
+    private GameState gameState;
     public static final String PREFIX = "resources/";
 
-
-    public void init() {
+    public void initIntro() {
 
         arena = new Arena();
         player = new Player(arena.getBUSHPADDING(), arena.getHeight()/2);
 
         myKeyboard = new MyKeyboard(player, arena, this);
+        gameState = new GameState();
 
         scoreDisplay(score);
         maxArrowsDisplay(maxArrows);
 
 
-        for (int i = 0; i < numberOfTargets; i++) {
+        for(int i = 0; i < numberOfTargets; i++) {
             targets.add(TargetFactory.createTarget());
         }
+
+        gameState.displayIntro(true);
+
+    }
+
+    public void initGame() {
+
+        gameState.displayIntro(false);
 
     }
 
     private void showGameOver() {
-        int w = arena.getWidth();
-        int h = arena.getHeight();
-
-        gameOver = new Picture(w, h);
-        gameOver.translate(arena.getLeft(), arena.getTop());
-        gameOver.draw();
+        arena.displayArena(false);
+        gameState.displayGameOver();
     }
 
     public void start() throws InterruptedException {
@@ -136,7 +141,7 @@ public class Game {
 
 
     public void scoreDisplay(int score) {
-        scoreText = new Text(arena.getRight() - 100, 10, "Score: " + score);
+        scoreText = new Text(arena.getRight()-100, 10, "Score: " + score);
         scoreText.grow(45, 17);
         scoreText.setColor(Color.WHITE);
         scoreText.draw();
@@ -144,7 +149,7 @@ public class Game {
 
     public void maxArrowsDisplay(int maxArrows) {
 
-        arrowsText = new Text(arena.getLeft() + 80, 10, "Arrows left: " + maxArrows);
+        arrowsText = new Text(arena.getLeft()+80, 10, "Arrows left: " + maxArrows);
         arrowsText.grow(45, 17);
         arrowsText.draw();
 
