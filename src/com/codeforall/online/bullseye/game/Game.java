@@ -54,11 +54,6 @@ public class Game {
 
     }
 
-    private void showGameOver() {
-        arena.displayArena(false);
-        gameState.displayGameOver();
-    }
-
     public void start() throws InterruptedException {
 
         while (!targets.isEmpty() && (maxArrows > 0 || !arrows.isEmpty())) {
@@ -80,6 +75,12 @@ public class Game {
 
     }
 
+
+    private void showGameOver() {
+        arena.displayArena(false);
+        gameState.displayGameOver();
+    }
+
     public void playerShoot() {
         if (maxArrows <= 0) {
             return;
@@ -93,19 +94,19 @@ public class Game {
         lastShotMs = now;
     }
 
-    public void moveAllTargets() {
+    private void moveAllTargets() {
         for (Target t : targets) {
             t.update(arena);
         }
     }
 
-    public void moveAllArrows() {
+    private void moveAllArrows() {
         for (Arrows a : arrows) {
             a.update(arena);
         }
     }
 
-    public void checkCollision() {
+    private void checkCollision() {
         List<Arrows> aToRemove = new ArrayList<>();
         List<Target> tToRemove = new ArrayList<>();
 
@@ -127,7 +128,7 @@ public class Game {
     }
 
 
-    public void overTheBush() {
+    private void overTheBush() {
         List<Arrows> toRemove = new ArrayList<>();
 
         for (Arrows a: arrows) {
@@ -140,14 +141,14 @@ public class Game {
     }
 
 
-    public void scoreDisplay(int score) {
+    private void scoreDisplay(int score) {
         scoreText = new Text(arena.getRight()-100, 10, "Score: " + score);
         scoreText.grow(45, 17);
         scoreText.setColor(Color.WHITE);
         scoreText.draw();
     }
 
-    public void maxArrowsDisplay(int maxArrows) {
+    private void maxArrowsDisplay(int maxArrows) {
 
         arrowsText = new Text(arena.getLeft()+80, 10, "Arrows left: " + maxArrows);
         arrowsText.grow(45, 17);
@@ -155,7 +156,7 @@ public class Game {
 
     }
 
-    public void updateHUD() {
+    private void updateHUD() {
         scoreText.setText("Score: " + score);
         arrowsText.setText("Arrows left: " + maxArrows);
     }
