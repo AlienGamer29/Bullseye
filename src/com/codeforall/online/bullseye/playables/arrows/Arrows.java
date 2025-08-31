@@ -33,13 +33,10 @@ public class Arrows extends Entity implements Collidables {
         speed = arrowSpeed;
     }
 
+    @Override
     public void update(Arena arena){
-        move(arena);
-
-    }
-
-    public void move(Arena arena) {
         picture.translate(speed, 0);
+
     }
 
     public void setRandomArrow (){
