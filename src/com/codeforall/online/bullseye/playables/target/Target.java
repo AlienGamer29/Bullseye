@@ -57,7 +57,7 @@ public class Target extends Entity implements Collidables {
     }
 
     // Moves the target UP or DOWN. If it hits top/bottom arena borders, reverses direction.
-    public void moveInDirection(Direction dir, Arena arena) {
+    private void moveInDirection(Direction dir, Arena arena) {
 
         if (picture.getY() <= arena.getTopBush()) {
             currDirection = Direction.DOWN;

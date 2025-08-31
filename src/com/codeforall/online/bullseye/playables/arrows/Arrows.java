@@ -39,7 +39,7 @@ public class Arrows extends Entity implements Collidables {
 
     }
 
-    public void setRandomArrow (){
+    private void setRandomArrow (){
         int randomArrowType;
 
         randomArrowType = (int)(Math.random()*5);
