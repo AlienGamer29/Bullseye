@@ -50,6 +50,7 @@ public class Target extends Entity implements Collidables {
     }
 
     // Updates target position: moves in the current direction and checks arena bounds
+    @Override
     public void update(Arena arena) {
         moveInDirection(currDirection, arena);
 
