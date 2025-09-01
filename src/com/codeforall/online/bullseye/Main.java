@@ -2,7 +2,6 @@ package com.codeforall.online.bullseye;
 
 
 import com.codeforall.online.bullseye.game.Game;
-import com.codeforall.online.bullseye.game.GameState;
 
 
 public class Main {

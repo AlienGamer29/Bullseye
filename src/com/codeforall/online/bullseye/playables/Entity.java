@@ -9,6 +9,7 @@ public abstract class Entity {
     protected int speed;
     protected Picture picture;
 
+
     public Entity(int x, int y) {
         this.x = x;
         this.y = y;

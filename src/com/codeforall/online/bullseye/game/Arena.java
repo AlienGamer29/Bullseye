@@ -3,6 +3,9 @@ package com.codeforall.online.bullseye.game;
 import com.codeforall.simplegraphics.graphics.Canvas;
 import com.codeforall.simplegraphics.pictures.Picture;
 
+import static com.codeforall.online.bullseye.game.Game.PREFIX;
+
+
 public class Arena {
 
     private int width;
@@ -10,9 +13,11 @@ public class Arena {
     private Picture picture;
     private final int BUSHPADDING = 50;
 
+
+
     public Arena() {
 
-        picture = new Picture(0, 0, "resources/background.jpeg");
+        picture = new Picture(0, 0, PREFIX + "background.jpeg");
         picture.grow(-256, -128); // 1534-1024= 512/2 = 256, 1024-768 = 256/2= 128
         picture.translate(-256, -128); // volta a encostar ao (0,0)
 
@@ -29,6 +34,10 @@ public class Arena {
 
     public int getHeight() {
         return height;
+    }
+
+    public int getWidth() {
+        return width;
     }
 
     public int getTop() {

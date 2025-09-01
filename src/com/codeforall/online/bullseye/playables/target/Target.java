@@ -1,7 +1,11 @@
-package com.codeforall.online.bullseye.playables;
+package com.codeforall.online.bullseye.playables.target;
 
 import com.codeforall.online.bullseye.game.Arena;
+import com.codeforall.online.bullseye.playables.Collidables;
+import com.codeforall.online.bullseye.playables.Entity;
 import com.codeforall.simplegraphics.pictures.Picture;
+
+import static com.codeforall.online.bullseye.game.Game.PREFIX;
 
 public class Target extends Entity implements Collidables {
 
@@ -11,7 +15,7 @@ public class Target extends Entity implements Collidables {
         super(x, y);
 
         // Create and draw the target picture, resize and recenter
-        this.picture = new Picture(x, y, "resources/target309x314.png");
+        this.picture = new Picture(x, y, PREFIX + "target309x314.png");
         picture.grow(-118, -110);
         picture.translate(-118, -110);
         picture.draw();
@@ -46,13 +50,14 @@ public class Target extends Entity implements Collidables {
     }
 
     // Updates target position: moves in the current direction and checks arena bounds
+    @Override
     public void update(Arena arena) {
         moveInDirection(currDirection, arena);
 
     }
 
     // Moves the target UP or DOWN. If it hits top/bottom arena borders, reverses direction.
-    public void moveInDirection(Direction dir, Arena arena) {
+    private void moveInDirection(Direction dir, Arena arena) {
 
         if (picture.getY() <= arena.getTopBush()) {
             currDirection = Direction.DOWN;

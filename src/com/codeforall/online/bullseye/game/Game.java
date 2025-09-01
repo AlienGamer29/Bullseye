@@ -1,8 +1,12 @@
 package com.codeforall.online.bullseye.game;
 
 import com.codeforall.online.bullseye.playables.*;
+import com.codeforall.online.bullseye.playables.arrows.Arrows;
+import com.codeforall.online.bullseye.playables.target.Target;
+import com.codeforall.online.bullseye.playables.target.TargetFactory;
 import com.codeforall.simplegraphics.graphics.Color;
 import com.codeforall.simplegraphics.graphics.Text;
+import com.codeforall.simplegraphics.pictures.Picture;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,27 +20,31 @@ public class Game {
     private Player player;
     private TargetFactory targetFactory;
     private int score = 0;
-    private int numberOfTargets = 10;
-    private int delay = 16;
+    private final int numberOfTargets = 10;
+    private final int delay = 16;
     private int maxArrows = 10;
     private Text scoreText;
     private Text arrowsText;
     private final int cooldownMs = 600;
     private long lastShotMs = -cooldownMs;
+    private Picture gameOver;
     private GameState gameState;
+    public static final String PREFIX = "resources/";
 
     public void initIntro() {
 
         arena = new Arena();
-        player = new Player(arena.getBUSHPADDING(), 384);
+        player = new Player(arena.getBUSHPADDING(), arena.getHeight()/2);
+
         myKeyboard = new MyKeyboard(player, arena, this);
         gameState = new GameState();
 
         scoreDisplay(score);
         maxArrowsDisplay(maxArrows);
 
-        for (int i = 0; i < numberOfTargets; i++) {
-            targets.add(targetFactory.createTarget());
+
+        for(int i = 0; i < numberOfTargets; i++) {
+            targets.add(TargetFactory.createTarget());
         }
 
         gameState.displayIntro(true);
@@ -47,18 +55,6 @@ public class Game {
 
         gameState.displayIntro(false);
 
-    }
-
-    private void showGameOver() {
-        //int w = arena.getRight() - arena.getLeft();
-        //int h = arena.getBottom() - arena.getTop();
-
-        // = new Picture(w, h);
-        //gameOver.translate(arena.getLeft(), arena.getTop());
-        //gameOver.draw();
-
-        arena.displayArena(false);
-        gameState.displayGameOver();
     }
 
     public void start() throws InterruptedException {
@@ -75,11 +71,18 @@ public class Game {
         }
 
         if (targets.isEmpty()) {
-            // CRIAIR MENSAGEM NO ECRA "YOU WIN"
+            showGameOver();
         } else if (maxArrows <= 0 && arrows.isEmpty()) {
             showGameOver();
         }
 
+    }
+
+
+    private void showGameOver() {
+        arena.displayArena(false);
+        gameState.displayGameOver();
+        scoreDisplay(score);
     }
 
     public void playerShoot() {
@@ -95,19 +98,19 @@ public class Game {
         lastShotMs = now;
     }
 
-    public void moveAllTargets() {
+    private void moveAllTargets() {
         for (Target t : targets) {
             t.update(arena);
         }
     }
 
-    public void moveAllArrows() {
+    private void moveAllArrows() {
         for (Arrows a : arrows) {
             a.update(arena);
         }
     }
 
-    public void checkCollision() {
+    private void checkCollision() {
         List<Arrows> aToRemove = new ArrayList<>();
         List<Target> tToRemove = new ArrayList<>();
 
@@ -115,7 +118,6 @@ public class Game {
             for (Target t : targets) {
                 if (a.getMaxX() > t.getX() && a.getMaxY() > t.getY() && a.getY() < t.getMaxY()) {
                     t.removePicture();
-                    a.removePicture();
                     a.removePicture();
                     aToRemove.add(a);
                     tToRemove.add(t);
@@ -130,10 +132,10 @@ public class Game {
     }
 
 
-    public void overTheBush() {
+    private void overTheBush() {
         List<Arrows> toRemove = new ArrayList<>();
 
-        for (Arrows a : arrows) {
+        for (Arrows a: arrows) {
             if (a.getX() > arena.getRight()) {
                 a.removePicture();
                 toRemove.add(a);
@@ -143,29 +145,27 @@ public class Game {
     }
 
 
-    public void scoreDisplay(int score) {
-        scoreText = new Text(arena.getRight() - 100, 10, "Score: " + score);
+    private void scoreDisplay(int score) {
+        scoreText = new Text(arena.getRight()-100, 10, "Score: " + score);
         scoreText.grow(45, 17);
         scoreText.setColor(Color.WHITE);
         scoreText.draw();
     }
 
-    public void maxArrowsDisplay(int maxArrows) {
+    private void maxArrowsDisplay(int maxArrows) {
 
-        arrowsText = new Text(arena.getLeft() + 80, 10, "Arrows left: " + maxArrows);
+        arrowsText = new Text(arena.getLeft()+80, 10, "Arrows left: " + maxArrows);
         arrowsText.grow(45, 17);
         arrowsText.draw();
 
     }
 
-    public void updateHUD() {
+    private void updateHUD() {
         scoreText.setText("Score: " + score);
         arrowsText.setText("Arrows left: " + maxArrows);
     }
-
-
-    // próximas preocupações: imagem game over, fazer aparecer no ecrã o número de setas que temos e o score, menu
-    // conseguimos inserir texto por cima das imagens, por exemplo por cima do arbustos? texto constantemente atualizado à medida que o checkcolision funciona e decrementamos as setas no player.shoot
-
-
 }
+
+
+
+

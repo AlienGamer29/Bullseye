@@ -1,9 +1,12 @@
-package com.codeforall.online.bullseye.playables;
+package com.codeforall.online.bullseye.playables.arrows;
 
 import com.codeforall.online.bullseye.game.Arena;
+import com.codeforall.online.bullseye.playables.Collidables;
+import com.codeforall.online.bullseye.playables.Entity;
 import com.codeforall.simplegraphics.pictures.Picture;
 
-public class Arrows extends Entity implements Collidables{
+public class Arrows extends Entity implements Collidables {
+
 
     public String arrowPath;
     public int arrowSpeed;
@@ -30,15 +33,13 @@ public class Arrows extends Entity implements Collidables{
         speed = arrowSpeed;
     }
 
+    @Override
     public void update(Arena arena){
-        move(arena);
-    }
-
-    public void move(Arena arena) {
         picture.translate(speed, 0);
+
     }
 
-    public void setRandomArrow (){
+    private void setRandomArrow (){
         int randomArrowType;
 
         randomArrowType = (int)(Math.random()*5);

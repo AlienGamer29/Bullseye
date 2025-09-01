@@ -1,7 +1,10 @@
 package com.codeforall.online.bullseye.playables;
 
 import com.codeforall.online.bullseye.game.Arena;
+import com.codeforall.online.bullseye.playables.arrows.Arrows;
 import com.codeforall.simplegraphics.pictures.Picture;
+
+import static com.codeforall.online.bullseye.game.Game.PREFIX;
 
 public class Player extends Entity {
 
@@ -13,13 +16,10 @@ public class Player extends Entity {
         int shrinkX = 10;
         int shrinkY = 10;
 
-        picture = new Picture(x, y,"resources/player_resized.png");
+        picture = new Picture(x, y,PREFIX + "player_resized.png");
         picture.grow(-shrinkX, -shrinkY);
         picture.translate(-shrinkX, -shrinkY);
         displayPlayer();
-        this.x = x;
-        this.y = y;
-
     }
 
     public void moveUp(Arena  arena) {
@@ -50,8 +50,7 @@ public class Player extends Entity {
         int arrowX = x + picture.getWidth();// spawn ao lado direito do player
         int arrowY = y + picture.getHeight() / 2; // spawn ao centro da imagem do player
 
-        Arrows arrows = new Arrows(arrowX, arrowY);
-        return arrows;
+        return new Arrows(arrowX, arrowY);
 
     }
 

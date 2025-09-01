@@ -3,14 +3,16 @@ package com.codeforall.online.bullseye.game;
 import com.codeforall.simplegraphics.graphics.Canvas;
 import com.codeforall.simplegraphics.pictures.Picture;
 
+import static com.codeforall.online.bullseye.game.Game.PREFIX;
+
 public class GameState {
 
     private Picture gameIntro;
     private Picture gameOver;
 
     public GameState() {
-        this.gameIntro = new Picture(0,0, "resources/introbackground.png");
-        this.gameOver = new Picture(0,0, "resources/gameoverbackground.png");
+        this.gameIntro = new Picture(0,0, PREFIX +"introbackground.png");
+        this.gameOver = new Picture(0,0, PREFIX + "gameoverbackground.png");
     }
 
 
