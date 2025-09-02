@@ -22,6 +22,15 @@ public class MyKeyboard implements KeyboardHandler {
         this.arena = arena;
         this.game = game;
         initKeys();
+
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public void setArena(Arena arena) {
+        this.arena = arena;
     }
 
     public void initKeys(){
@@ -60,6 +69,12 @@ public class MyKeyboard implements KeyboardHandler {
         spaceRelease.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
 
         myKeyboard.addEventListener(spaceRelease);
+
+        KeyboardEvent reset = new KeyboardEvent();
+        reset.setKey(KeyboardEvent.KEY_R);
+        reset.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+
+        myKeyboard.addEventListener(reset);
     }
 
     @Override
@@ -78,8 +93,19 @@ public class MyKeyboard implements KeyboardHandler {
                 spaceHeld = true;
                 game.playerShoot();
             }
+        } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_R) {
+            System.out.println("R key pressed");
+            if (game.isGameOver()) {
+                System.out.println("Game over - let's restart");
+                    game.reset();
+                    try {
+                        game.start();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+               }
+            }
         }
-    }
 
     @Override
     public void keyReleased(KeyboardEvent keyboardEvent) {

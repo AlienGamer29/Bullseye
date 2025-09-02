@@ -4,6 +4,7 @@ import com.codeforall.online.bullseye.playables.*;
 import com.codeforall.online.bullseye.playables.arrows.Arrows;
 import com.codeforall.online.bullseye.playables.target.Target;
 import com.codeforall.online.bullseye.playables.target.TargetFactory;
+import com.codeforall.simplegraphics.graphics.Canvas;
 import com.codeforall.simplegraphics.graphics.Color;
 import com.codeforall.simplegraphics.graphics.Text;
 import com.codeforall.simplegraphics.pictures.Picture;
@@ -20,7 +21,7 @@ public class Game {
     private Player player;
     private TargetFactory targetFactory;
     private int score = 0;
-    private final int numberOfTargets = 10;
+    private int numberOfTargets = 10;
     private final int delay = 16;
     private int maxArrows = 10;
     private Text scoreText;
@@ -30,11 +31,12 @@ public class Game {
     private Picture gameOver;
     private GameState gameState;
     public static final String PREFIX = "resources/";
+    private boolean gameEnded = false;
 
     public void initIntro() {
 
         arena = new Arena();
-        player = new Player(arena.getBUSHPADDING(), arena.getHeight()/2);
+        player = new Player(arena.getBUSHPADDING(), arena.getHeight() / 2);
 
         myKeyboard = new MyKeyboard(player, arena, this);
         gameState = new GameState();
@@ -43,7 +45,7 @@ public class Game {
         maxArrowsDisplay(maxArrows);
 
 
-        for(int i = 0; i < numberOfTargets; i++) {
+        for (int i = 0; i < numberOfTargets; i++) {
             targets.add(TargetFactory.createTarget());
         }
 
@@ -58,6 +60,7 @@ public class Game {
     }
 
     public void start() throws InterruptedException {
+        System.out.println("Game begins");
 
         while (!targets.isEmpty() && (maxArrows > 0 || !arrows.isEmpty())) {
 
@@ -72,12 +75,15 @@ public class Game {
 
         if (targets.isEmpty()) {
             showGameOver();
+            gameEnded = true;
+            System.out.println("Game ended");
         } else if (maxArrows <= 0 && arrows.isEmpty()) {
             showGameOver();
+            gameEnded = true;
+            System.out.println("Game ended");
         }
 
     }
-
 
     private void showGameOver() {
         arena.displayArena(false);
@@ -135,7 +141,7 @@ public class Game {
     private void overTheBush() {
         List<Arrows> toRemove = new ArrayList<>();
 
-        for (Arrows a: arrows) {
+        for (Arrows a : arrows) {
             if (a.getX() > arena.getRight()) {
                 a.removePicture();
                 toRemove.add(a);
@@ -146,7 +152,7 @@ public class Game {
 
 
     private void scoreDisplay(int score) {
-        scoreText = new Text(arena.getRight()-100, 10, "Score: " + score);
+        scoreText = new Text(arena.getRight() - 100, 10, "Score: " + score);
         scoreText.grow(45, 17);
         scoreText.setColor(Color.WHITE);
         scoreText.draw();
@@ -154,7 +160,7 @@ public class Game {
 
     private void maxArrowsDisplay(int maxArrows) {
 
-        arrowsText = new Text(arena.getLeft()+80, 10, "Arrows left: " + maxArrows);
+        arrowsText = new Text(arena.getLeft() + 80, 10, "Arrows left: " + maxArrows);
         arrowsText.grow(45, 17);
         arrowsText.draw();
 
@@ -164,6 +170,44 @@ public class Game {
         scoreText.setText("Score: " + score);
         arrowsText.setText("Arrows left: " + maxArrows);
     }
+
+    public boolean isGameOver() {
+        return gameEnded == true;
+    }
+
+    public void reset() {
+        System.out.println("Reset called");
+        if (gameEnded == true) {
+            maxArrows = 10;
+            score = 0;
+            numberOfTargets = 10;
+            arrows = new ArrayList<>();
+            targets = new ArrayList<>();
+
+            for (int i = 0; i < numberOfTargets; i++) {
+                targets.add(TargetFactory.createTarget());
+            }
+
+            arena = new Arena();
+            player = new Player(arena.getBUSHPADDING(), arena.getHeight() / 2);
+
+            myKeyboard.setPlayer(player);
+            myKeyboard.setArena(arena);
+
+            gameState = new GameState();
+
+            scoreDisplay(score);
+            maxArrowsDisplay(maxArrows);
+
+            System.out.println("targets after reset: " + numberOfTargets);
+            System.out.println("arrows after reset:" + maxArrows);
+
+            gameEnded = false;
+
+        }
+
+    }
+
 }
 
 
