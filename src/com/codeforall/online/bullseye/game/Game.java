@@ -191,8 +191,10 @@ public class Game {
             arena = new Arena();
             player = new Player(arena.getBUSHPADDING(), arena.getHeight() / 2);
 
+            /*
             myKeyboard.setPlayer(player);
             myKeyboard.setArena(arena);
+            */
 
             gameState = new GameState();
 
@@ -201,8 +203,6 @@ public class Game {
 
             System.out.println("targets after reset: " + numberOfTargets);
             System.out.println("arrows after reset:" + maxArrows);
-
-            gameEnded = false;
 
         }
 

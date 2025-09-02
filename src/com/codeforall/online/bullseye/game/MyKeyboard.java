@@ -25,6 +25,7 @@ public class MyKeyboard implements KeyboardHandler {
 
     }
 
+    /*
     public void setPlayer(Player player) {
         this.player = player;
     }
@@ -32,6 +33,8 @@ public class MyKeyboard implements KeyboardHandler {
     public void setArena(Arena arena) {
         this.arena = arena;
     }
+
+     */
 
     public void initKeys(){
         KeyboardEvent UP = new KeyboardEvent();
