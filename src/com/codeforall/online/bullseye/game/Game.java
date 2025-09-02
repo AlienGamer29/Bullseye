@@ -116,7 +116,22 @@ public class Game {
 
         for (Arrows a : arrows) {
             for (Target t : targets) {
-                if (a.getMaxX() > t.getX() && a.getMaxY() > t.getY() && a.getY() < t.getMaxY()) {
+                //Target center
+                int targetCenterX = t.getX() + t.getWidth()/2;
+                int targetCenterY = t.getY() + t.getHeight()/2;
+                int targetRadius = t.getWidth()/2;
+
+                //Arrow tip
+                int arrowTipX = a.getMaxX();
+                int arrowTipY = a.getY() + a.getHeight()/2;
+
+                //distance
+                double dx = arrowTipX - targetCenterX;
+                double dy = arrowTipY - targetCenterY;
+
+                double distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance <= targetRadius) {
                     t.removePicture();
                     a.removePicture();
                     aToRemove.add(a);

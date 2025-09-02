@@ -8,6 +8,8 @@ public interface Collidables {
     int getY();
     int getMaxX();
     int getMaxY();
+    int getWidth();
+    int getHeight();
     void update(Arena arena);
     void removePicture();
 

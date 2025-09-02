@@ -79,4 +79,14 @@ public class Arrows extends Entity implements Collidables {
     public int getMaxY() {
         return picture.getMaxY();
     }
+
+    @Override
+    public int getWidth() {
+        return picture.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return picture.getHeight();
+    }
 }
