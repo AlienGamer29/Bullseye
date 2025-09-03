@@ -13,6 +13,7 @@ import java.util.List;
 
 public class Game {
 
+    public static final String PREFIX = "resources/";
     private Arena arena;
     private MyKeyboard myKeyboard;
     private List<Arrows> arrows = new ArrayList<>();
@@ -27,7 +28,6 @@ public class Game {
     private final int cooldownMs = 600;
     private long lastShotMs = -cooldownMs;
     private GameState gameState;
-    public static final String PREFIX = "resources/";
     private boolean running = false;
     private Thread gameThread;
 
