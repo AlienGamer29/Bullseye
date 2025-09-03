@@ -45,6 +45,16 @@ public class Target extends Entity implements Collidables {
         return picture.getMaxY();
     }
 
+    @Override
+    public int getWidth() {
+        return picture.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return picture.getHeight();
+    }
+
     public void removePicture() {
         picture.delete();
     }
