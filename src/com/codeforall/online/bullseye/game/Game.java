@@ -110,7 +110,6 @@ public class Game {
     }
 
 
-
     private void showGameOver() {
         arena.displayArena(false);
         gameState.displayGameOver();
