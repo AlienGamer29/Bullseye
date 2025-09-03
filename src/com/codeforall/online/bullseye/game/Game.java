@@ -6,7 +6,6 @@ import com.codeforall.online.bullseye.playables.target.Target;
 import com.codeforall.online.bullseye.playables.target.TargetFactory;
 import com.codeforall.simplegraphics.graphics.Color;
 import com.codeforall.simplegraphics.graphics.Text;
-import com.codeforall.simplegraphics.pictures.Picture;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,6 @@ public class Game {
     private List<Arrows> arrows = new ArrayList<>();
     private List<Target> targets = new ArrayList<>();
     private Player player;
-    private TargetFactory targetFactory;
     private int score = 0;
     private final int numberOfTargets = 10;
     private final int delay = 16;
@@ -27,7 +25,6 @@ public class Game {
     private Text arrowsText;
     private final int cooldownMs = 600;
     private long lastShotMs = -cooldownMs;
-    private Picture gameOver;
     private GameState gameState;
     public static final String PREFIX = "resources/";
 
@@ -71,7 +68,7 @@ public class Game {
         }
 
         if (targets.isEmpty()) {
-            showGameOver();
+            gameState.displayGameWin();
         } else if (maxArrows <= 0 && arrows.isEmpty()) {
             showGameOver();
         }

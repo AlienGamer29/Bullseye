@@ -17,12 +17,12 @@ public class Arrows extends Entity implements Collidables {
         setPicture();
         picture.grow(-50, -25);
         picture.translate(-50, -25);
-        picture.draw();
+        displayArrows(true);
         setSpeed();
     }
 
     public void removePicture(){
-        picture.delete();
+        displayArrows(false);
     }
 
     public void setPicture() {
@@ -53,12 +53,18 @@ public class Arrows extends Entity implements Collidables {
                 arrowPath = ArrowTypes.GREEN.getPath();
                 arrowSpeed = ArrowTypes.GREEN.getSpeed();
                 break;
-            case 2:
-            case 3:
-            case 4:
+            default:
                 arrowPath = ArrowTypes.RED.getPath();
                 arrowSpeed = ArrowTypes.RED.getSpeed();
                 break;
+        }
+    }
+
+    public void displayArrows(Boolean show) {
+        if (show) {
+            picture.draw();
+        } else {
+            picture.delete();
         }
     }
 

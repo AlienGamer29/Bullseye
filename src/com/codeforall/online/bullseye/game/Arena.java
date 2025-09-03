@@ -69,7 +69,7 @@ public class Arena {
     }
 
     public void displayArena(Boolean show) {
-        if (true) {
+        if (show) {
             picture.draw();
         } else {
             picture.delete();
