@@ -22,7 +22,7 @@ public class Game {
     private int score = 0;
     private final int numberOfTargets = 10;
     private final int delay = 16;
-    private int maxArrows = 10;
+    private int maxArrows = 20;
     private Text scoreText;
     private Text arrowsText;
     private final int cooldownMs = 600;
@@ -30,11 +30,19 @@ public class Game {
     private Picture gameOver;
     private GameState gameState;
     public static final String PREFIX = "resources/";
+    private Sfx Shoot, Hit, Win, Lose;
+    private Sfx bgm;
 
     public void initIntro() {
 
         arena = new Arena();
         player = new Player(arena.getBUSHPADDING(), arena.getHeight()/2);
+        bgm = Sfx.load("/Sound/Background.wav");
+        bgm.prime();
+        Shoot = Sfx.load("/Sound/Arrow_Shoot.wav");
+        Hit = Sfx.load("/Sound/Target_Hit.wav");
+        Win = Sfx.load("/Sound/Game_win.wav");
+        Lose = Sfx.load("/Sound/Game_Over.wav");
 
         myKeyboard = new MyKeyboard(player, arena, this);
         gameState = new GameState();
@@ -54,6 +62,7 @@ public class Game {
     public void initGame() {
 
         gameState.displayIntro(false);
+        bgm.playLoop();
 
     }
 
@@ -80,9 +89,12 @@ public class Game {
 
 
     private void showGameOver() {
+        bgm.stop();
         arena.displayArena(false);
         gameState.displayGameOver();
         scoreDisplay(score);
+        Lose.play();
+
     }
 
     public void playerShoot() {
@@ -95,7 +107,9 @@ public class Game {
         }
         arrows.add(player.shoot());
         maxArrows--;
+
         lastShotMs = now;
+        Shoot.play();
     }
 
     private void moveAllTargets() {
@@ -132,6 +146,7 @@ public class Game {
                 double distance = Math.sqrt(dx * dx + dy * dy);
 
                 if (distance <= targetRadius) {
+                    Hit.play();
                     t.removePicture();
                     a.removePicture();
                     aToRemove.add(a);
