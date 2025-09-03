@@ -57,7 +57,6 @@ public class Game {
         for(int i = 0; i < numberOfTargets; i++) {
             targets.add(TargetFactory.createTarget());
         }
-        System.out.println(targets.size());
 
         start();
 
