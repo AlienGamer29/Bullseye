@@ -179,6 +179,12 @@ public class Game {
         scoreText.setText("Score: " + score);
         arrowsText.setText("Arrows left: " + maxArrows);
     }
+
+    public void resetGame() {
+        score = 0;
+        maxArrows = 10;
+        initIntro();
+    }
 }
 
 
