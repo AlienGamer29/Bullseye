@@ -53,9 +53,7 @@ public class Arrows extends Entity implements Collidables {
                 arrowPath = ArrowTypes.GREEN.getPath();
                 arrowSpeed = ArrowTypes.GREEN.getSpeed();
                 break;
-            case 2:
-            case 3:
-            case 4:
+            case 2, 3, 4:
                 arrowPath = ArrowTypes.RED.getPath();
                 arrowSpeed = ArrowTypes.RED.getSpeed();
                 break;
