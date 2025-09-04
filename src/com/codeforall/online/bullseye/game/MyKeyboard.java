@@ -11,9 +11,16 @@ public class MyKeyboard implements KeyboardHandler {
     private Player player;
     private Arena arena;
     private Game game;
-    private GameState gameState;
+
 
     private boolean spaceHeld = false;
+
+    public MyKeyboard(Game game) {
+        myKeyboard = new Keyboard(this);
+
+        this.game = game;
+        initKeys();
+    }
 
     public MyKeyboard(Player player, Arena arena, Game game) { // associar o Player dentro do MyKeyboard
         myKeyboard = new Keyboard(this);
@@ -22,6 +29,11 @@ public class MyKeyboard implements KeyboardHandler {
         this.arena = arena;
         this.game = game;
         initKeys();
+    }
+
+    public void setArenaAndPlayer(Arena arena, Player player) {
+        this.arena = arena;
+        this.player = player;
     }
 
     public void initKeys(){
@@ -60,6 +72,12 @@ public class MyKeyboard implements KeyboardHandler {
         spaceRelease.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
 
         myKeyboard.addEventListener(spaceRelease);
+
+        KeyboardEvent restart = new KeyboardEvent();
+        restart.setKey(KeyboardEvent.KEY_R);
+        restart.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+
+        myKeyboard.addEventListener(restart);
     }
 
     @Override
@@ -73,6 +91,9 @@ public class MyKeyboard implements KeyboardHandler {
             System.exit(0);
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_S){
             game.initGame();
+            game.start();
+        } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_R) {
+            game.resetGame();
         } else if(keyboardEvent.getKey() == KeyboardEvent.KEY_SPACE) {
             if (!spaceHeld) {
                 spaceHeld = true;
