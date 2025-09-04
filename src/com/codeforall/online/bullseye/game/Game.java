@@ -13,12 +13,12 @@ import java.util.List;
 
 public class Game {
 
+    public static final String PREFIX = "resources/";
     private Arena arena;
     private MyKeyboard myKeyboard;
     private List<Arrows> arrows = new ArrayList<>();
     private List<Target> targets = new ArrayList<>();
     private Player player;
-    private TargetFactory targetFactory;
     private int score = 0;
     private final int numberOfTargets = 10;
     private final int delay = 16;
@@ -27,25 +27,15 @@ public class Game {
     private Text arrowsText;
     private final int cooldownMs = 600;
     private long lastShotMs = -cooldownMs;
-    private Picture gameOver;
     private GameState gameState;
-    public static final String PREFIX = "resources/";
+    private boolean running = false;
+    private Thread gameThread;
 
     public void initIntro() {
 
-        arena = new Arena();
-        player = new Player(arena.getBUSHPADDING(), arena.getHeight()/2);
 
-        myKeyboard = new MyKeyboard(player, arena, this);
+        myKeyboard = new MyKeyboard(this);
         gameState = new GameState();
-
-        scoreDisplay(score);
-        maxArrowsDisplay(maxArrows);
-
-
-        for(int i = 0; i < numberOfTargets; i++) {
-            targets.add(TargetFactory.createTarget());
-        }
 
         gameState.displayIntro(true);
 
@@ -53,29 +43,70 @@ public class Game {
 
     public void initGame() {
 
+        arrows.clear();
+        targets.clear();
+
         gameState.displayIntro(false);
+        arena = new Arena();
+        player = new Player(arena.getBUSHPADDING(), arena.getHeight()/2);
+        myKeyboard.setArenaAndPlayer(arena, player);
+
+        scoreDisplay(score);
+        maxArrowsDisplay(maxArrows);
+
+        for(int i = 0; i < numberOfTargets; i++) {
+            targets.add(TargetFactory.createTarget());
+        }
+
+        start();
 
     }
 
-    public void start() throws InterruptedException {
+    public void start() {
 
-        while (!targets.isEmpty() && (maxArrows > 0 || !arrows.isEmpty())) {
 
-            Thread.sleep(delay);
-
-            moveAllArrows();
-            moveAllTargets();
-            checkCollision();
-            overTheBush();
-            updateHUD();
+        if (running) {
+            return;
         }
 
-        if (targets.isEmpty()) {
-            showGameOver();
-        } else if (maxArrows <= 0 && arrows.isEmpty()) {
-            showGameOver();
-        }
+        running = true;
 
+        gameThread = new Thread(() -> {
+            while (running
+                    && !targets.isEmpty()
+                    && (maxArrows > 0 || !arrows.isEmpty())) {
+
+                moveAllArrows();
+                moveAllTargets();
+                checkCollision();
+                overTheBush();
+                updateHUD();
+
+                try {
+                    Thread.sleep(delay);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+
+            if (targets.isEmpty()) {
+                showGameOver();
+            } else {
+                showGameOver();
+            }
+            running = false;
+        });
+
+        gameThread.start();
+
+    }
+
+    public void stop() {
+        running = false;
+        if (gameThread != null) {
+            gameThread.interrupt();
+        }
     }
 
 
@@ -179,6 +210,29 @@ public class Game {
         scoreText.setText("Score: " + score);
         arrowsText.setText("Arrows left: " + maxArrows);
     }
+
+    public void resetGame() {
+
+        stop();
+
+        score = 0;
+        maxArrows = 10;
+
+        for (Arrows a : arrows) {
+            a.removePicture();
+        }
+
+        for (Target t : targets) {
+            t.removePicture();
+        }
+
+        arrows.clear();
+        targets.clear();
+        initIntro();
+    }
+
+
+
 }
 
 
