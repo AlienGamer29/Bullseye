@@ -21,7 +21,8 @@ public class Game {
     private int score = 0;
     private final int numberOfTargets = 10;
     private final int delay = 16;
-    private int maxArrows = 10;
+    private final int ARROWS_AVAILABLE = 15;
+    private int maxArrows;
     private Text scoreText;
     private Text arrowsText;
     private final int cooldownMs = 600;
@@ -32,13 +33,15 @@ public class Game {
 
     public void initIntro() {
 
-
-        myKeyboard = new MyKeyboard(this);
-        gameState = new GameState();
-
+        if (myKeyboard == null) {
+            myKeyboard = new MyKeyboard(this);
+        }
+        if (gameState == null) {
+            gameState = new GameState();
+        }
         gameState.displayIntro(true);
-
     }
+
 
     public void initGame() {
 
@@ -47,19 +50,21 @@ public class Game {
 
         gameState.displayIntro(false);
         arena = new Arena();
-        player = new Player(arena.getBUSHPADDING(), arena.getHeight()/2);
+        player = new Player(arena.getBUSH_PUDDING(), arena.getHeight()/2);
         myKeyboard.setArenaAndPlayer(arena, player);
 
+        score = 0;
+        maxArrows = ARROWS_AVAILABLE;
         scoreDisplay(score);
         maxArrowsDisplay(maxArrows);
 
-        for(int i = 0; i < numberOfTargets; i++) {
+        for (int i = 0; i < numberOfTargets; i++) {
             targets.add(TargetFactory.createTarget());
         }
 
         start();
-
     }
+
 
     public void start() {
 
@@ -90,13 +95,8 @@ public class Game {
             }
 
           
-        if (targets.isEmpty()) {
-            gameState.displayGameWin();
-        } else if (maxArrows <= 0 && arrows.isEmpty()) {
-            showGameOver();
-        }
             if (targets.isEmpty()) {
-                showGameOver();
+                gameState.displayGameWin();
             } else {
                 showGameOver();
             }
@@ -112,12 +112,17 @@ public class Game {
         running = false;
         if (gameThread != null) {
             gameThread.interrupt();
+            try {
+                gameThread.join(300);   // aguarda o fecho
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
 
 
     private void showGameOver() {
-        arena.displayArena(false);
+
         gameState.displayGameOver();
         scoreDisplay(score);
     }
@@ -222,19 +227,31 @@ public class Game {
         stop();
 
         score = 0;
-        maxArrows = 10;
+        maxArrows = ARROWS_AVAILABLE;
 
+        removeArrowsPicture();
+        removeTargetsPicture();
+        player.removePicture();
+        arena.removePicture();
+        gameState.removePicture();
+        scoreText.delete();
+        arrowsText.delete();
+        arrows.clear();
+        targets.clear();
+
+        initIntro();
+    }
+
+    private void removeArrowsPicture() {
         for (Arrows a : arrows) {
             a.removePicture();
         }
+    }
 
+    private void removeTargetsPicture() {
         for (Target t : targets) {
             t.removePicture();
         }
-
-        arrows.clear();
-        targets.clear();
-        initIntro();
     }
 
 
