@@ -21,10 +21,6 @@ public class Arrows extends Entity implements Collidables {
         setSpeed();
     }
 
-    public void removePicture(){
-        displayArrows(false);
-    }
-
     public void setPicture() {
         this.picture = new Picture(x, y, arrowPath);
     }
