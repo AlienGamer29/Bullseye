@@ -6,7 +6,6 @@ import com.codeforall.online.bullseye.playables.target.Target;
 import com.codeforall.online.bullseye.playables.target.TargetFactory;
 import com.codeforall.simplegraphics.graphics.Color;
 import com.codeforall.simplegraphics.graphics.Text;
-import com.codeforall.simplegraphics.pictures.Picture;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +89,12 @@ public class Game {
                 }
             }
 
+          
+        if (targets.isEmpty()) {
+            gameState.displayGameWin();
+        } else if (maxArrows <= 0 && arrows.isEmpty()) {
+            showGameOver();
+        }
             if (targets.isEmpty()) {
                 showGameOver();
             } else {
@@ -99,6 +104,7 @@ public class Game {
         });
 
         gameThread.start();
+
 
     }
 
