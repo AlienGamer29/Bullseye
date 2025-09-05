@@ -19,17 +19,19 @@ public class Game {
     private List<Target> targets = new ArrayList<>();
     private Player player;
     private int score = 0;
-    private final int numberOfTargets = 10;
-    private final int delay = 16;
+    private final int NUMBER_OF_TARGETS = 10;
+    private final int DELAY = 16;
     private final int ARROWS_AVAILABLE = 15;
     private int maxArrows;
     private Text scoreText;
     private Text arrowsText;
-    private final int cooldownMs = 600;
-    private long lastShotMs = -cooldownMs;
+    private Text highestScore;
+    private final int COOLDOWN_MS = 600;
+    private long lastShotMs = -COOLDOWN_MS;
     private GameState gameState;
     private boolean running = false;
     private Thread gameThread;
+    private int highScore = -1;
 
     public void initIntro() {
 
@@ -58,8 +60,13 @@ public class Game {
         scoreDisplay(score);
         maxArrowsDisplay(maxArrows);
 
-        for (int i = 0; i < numberOfTargets; i++) {
+
+        for (int i = 0; i < NUMBER_OF_TARGETS; i++) {
             targets.add(TargetFactory.createTarget());
+        }
+
+        if (highScore == -1)  {
+            highScore = HighScoreManager.getHighScore();
         }
 
         start();
@@ -87,19 +94,16 @@ public class Game {
                 updateHUD();
 
                 try {
-                    Thread.sleep(delay);
+                    Thread.sleep(DELAY);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;
                 }
             }
 
-          
-            if (targets.isEmpty()) {
-                gameState.displayGameWin();
-            } else {
-                showGameOver();
-            }
+            checkHighScore();
+            endGame();
+
             running = false;
         });
 
@@ -108,23 +112,11 @@ public class Game {
 
     }
 
-    public void stop() {
+    private void stop() {
         running = false;
         if (gameThread != null) {
             gameThread.interrupt();
-            try {
-                gameThread.join(300);   // aguarda o fecho
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
         }
-    }
-
-
-    private void showGameOver() {
-
-        gameState.displayGameOver();
-        scoreDisplay(score);
     }
 
     public void playerShoot() {
@@ -132,7 +124,7 @@ public class Game {
             return;
         }
         long now = System.currentTimeMillis();
-        if (now - lastShotMs < cooldownMs) {
+        if (now - lastShotMs < COOLDOWN_MS) {
             return;
         }
         arrows.add(player.shoot());
@@ -178,7 +170,7 @@ public class Game {
                     a.removePicture();
                     aToRemove.add(a);
                     tToRemove.add(t);
-                    score += 10;
+                    score += a.getType().getSCORE();
                     break;
                 }
             }
@@ -222,6 +214,13 @@ public class Game {
         arrowsText.setText("Arrows left: " + maxArrows);
     }
 
+    private void showGameOver() {
+
+        gameState.displayGameOver();
+        scoreDisplay(score);
+
+    }
+
     public void resetGame() {
 
         stop();
@@ -238,6 +237,8 @@ public class Game {
         arrowsText.delete();
         arrows.clear();
         targets.clear();
+        highestScore.delete();
+
 
         initIntro();
     }
@@ -253,6 +254,39 @@ public class Game {
             t.removePicture();
         }
     }
+
+
+    private void displayHighScore() {
+        highestScore = new Text(500, 150, "Highest Score: " + highScore);
+        highestScore.setColor(Color.WHITE);
+        highestScore.grow(100, 30);
+        highestScore.draw();
+    }
+
+    private void endGame() {
+        if (targets.isEmpty()) {
+            gameState.displayGameWin();
+            scoreDisplay(score);
+            displayHighScore();
+        } else {
+            showGameOver();
+            displayHighScore();
+        }
+
+        if (score > highScore) {
+            highScore = score;
+        }
+    }
+
+    private void checkHighScore() {
+        if (score > highScore) {
+            HighScoreManager.saveHighScore(score);
+
+        }
+    }
+
+
+
 
 
 
