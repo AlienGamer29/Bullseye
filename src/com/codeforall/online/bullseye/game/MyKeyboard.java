@@ -22,15 +22,6 @@ public class MyKeyboard implements KeyboardHandler {
         initKeys();
     }
 
-    public MyKeyboard(Player player, Arena arena, Game game) { // associar o Player dentro do MyKeyboard
-        myKeyboard = new Keyboard(this);
-
-        this.player = player;
-        this.arena = arena;
-        this.game = game;
-        initKeys();
-    }
-
     public void setArenaAndPlayer(Arena arena, Player player) {
         this.arena = arena;
         this.player = player;
