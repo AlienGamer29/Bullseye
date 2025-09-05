@@ -8,8 +8,9 @@ import com.codeforall.simplegraphics.pictures.Picture;
 public class Arrows extends Entity implements Collidables {
 
 
-    public String arrowPath;
-    public int arrowSpeed;
+    private String arrowPath;
+    private int arrowSpeed;
+    private ArrowTypes type;
 
     public Arrows(int x, int y) {
         super(x, y);
@@ -42,18 +43,18 @@ public class Arrows extends Entity implements Collidables {
 
         switch (randomArrowType){
             case 0:
-                arrowPath = ArrowTypes.BLUE.getPath();
-                arrowSpeed = ArrowTypes.BLUE.getSpeed();
+                type = ArrowTypes.BLUE;
                 break;
             case 1:
-                arrowPath = ArrowTypes.GREEN.getPath();
-                arrowSpeed = ArrowTypes.GREEN.getSpeed();
+                type = ArrowTypes.GREEN;
                 break;
             default:
-                arrowPath = ArrowTypes.RED.getPath();
-                arrowSpeed = ArrowTypes.RED.getSpeed();
+                type = ArrowTypes.RED;
                 break;
         }
+
+        arrowPath = type.getPATH();
+        arrowSpeed = type.getSPEED();
     }
 
     public void displayArrows(Boolean show) {
@@ -90,5 +91,9 @@ public class Arrows extends Entity implements Collidables {
     @Override
     public int getHeight() {
         return picture.getHeight();
+    }
+
+    public ArrowTypes getType() {
+        return type;
     }
 }
