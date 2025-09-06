@@ -11,7 +11,7 @@ public class Arena {
     private int width;
     private int height;
     private Picture picture;
-    private final int BUSHPADDING = 50;
+    private final int BUSH_PUDDING = 50;
 
 
 
@@ -29,7 +29,7 @@ public class Arena {
         Canvas.setMaxX(width - 10);
         Canvas.setMaxY(height - 10);
 
-        displayArena(true);
+        displayArena();
     }
 
     public int getHeight() {
@@ -49,11 +49,11 @@ public class Arena {
     }
 
     public int getTopBush() {
-        return picture.getY() + BUSHPADDING;
+        return picture.getY() + BUSH_PUDDING;
     }
 
     public int getBottomBush() {
-        return picture.getMaxY() - BUSHPADDING;
+        return picture.getMaxY() - BUSH_PUDDING;
     }
 
     public int getRight() {
@@ -64,16 +64,17 @@ public class Arena {
         return picture.getX();
     }
 
-    public int getBUSHPADDING() {
-        return BUSHPADDING;
+    public int getBUSH_PUDDING() {
+        return BUSH_PUDDING;
     }
 
-    public void displayArena(Boolean show) {
-        if (show) {
-            picture.draw();
-        } else {
-            picture.delete();
-        }
+    public void removePicture() {
+        picture.delete();
+    }
+
+    public void displayArena() {
+        picture.draw();
+
     }
 
 

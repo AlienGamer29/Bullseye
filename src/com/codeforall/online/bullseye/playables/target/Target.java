@@ -55,9 +55,6 @@ public class Target extends Entity implements Collidables {
         return picture.getHeight();
     }
 
-    public void removePicture() {
-        picture.delete();
-    }
 
     // Updates target position: moves in the current direction and checks arena bounds
     @Override

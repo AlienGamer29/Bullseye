@@ -13,20 +13,27 @@ public class GameState {
 
     public GameState() {
         this.gameIntro = new Picture(0,0, PREFIX +"introbackground.png");
+        gameIntro.grow(-256, -128);
+        gameIntro.translate(-256, -128);
+
         this.gameOver = new Picture(0,0, PREFIX + "gameoverbackground.png");
+        gameOver.grow(-256, -128);
+        gameOver.translate(-256, -128);
+
         this.gameWin = new Picture(0,0, PREFIX + "youwin_bg.png");
+        gameWin.grow(-256, -128);
+        gameWin.translate(-256, -128);
+
+        //Set the canvas size
+        Canvas.setMaxX(gameWin.getWidth() - 10);
+        Canvas.setMaxY(gameWin.getHeight() - 10);
+
     }
 
 
     public void displayIntro(Boolean show) {
 
         if (show) {
-            gameIntro.grow(-256, -128);
-            gameIntro.translate(-256, -128);
-
-            //Set the canvas size
-            Canvas.setMaxX(gameIntro.getWidth() - 10);
-            Canvas.setMaxY(gameIntro.getHeight() - 10);
 
             gameIntro.draw();
 
@@ -37,25 +44,20 @@ public class GameState {
     }
 
     public void displayGameOver() {
-        gameOver.grow(-256, -128);
-        gameOver.translate(-256, -128);
-
-        //Set the canvas size
-        Canvas.setMaxX(gameOver.getWidth() - 10);
-        Canvas.setMaxY(gameOver.getHeight() - 10);
 
         gameOver.draw();
     }
 
     public void displayGameWin() {
-        gameWin.grow(-256, -128);
-        gameWin.translate(-256, -128);
-
-        //Set the canvas size
-        Canvas.setMaxX(gameWin.getWidth() - 10);
-        Canvas.setMaxY(gameWin.getHeight() - 10);
 
         gameWin.draw();
+    }
+
+    public void removePicture() {
+        gameOver.delete();
+        gameWin.delete();
+        gameIntro.delete();
+
     }
 
 
