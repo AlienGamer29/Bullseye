@@ -75,17 +75,23 @@ public class MyKeyboard implements KeyboardHandler {
     public void keyPressed(KeyboardEvent keyboardEvent) {
         int key = keyboardEvent.getKey();
         if(keyboardEvent.getKey() == KeyboardEvent.KEY_UP){
+            //System.out.println("Up pressed");
             player.moveUp(arena);
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_DOWN) {
+            //System.out.println("Down pressed");
             player.moveDown(arena);
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_Q) {
+            //System.out.println("Q pressed");
             System.exit(0);
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_S){
+            //System.out.println("S pressed");
             game.initGame();
             game.start();
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_R) {
+            //System.out.println("R pressed");
             game.resetGame();
         } else if(keyboardEvent.getKey() == KeyboardEvent.KEY_SPACE) {
+            //System.out.println("Space pressed");
             if (!spaceHeld) {
                 spaceHeld = true;
                 game.playerShoot();
@@ -96,6 +102,7 @@ public class MyKeyboard implements KeyboardHandler {
     @Override
     public void keyReleased(KeyboardEvent keyboardEvent) {
         if (keyboardEvent.getKey() == KeyboardEvent.KEY_SPACE){
+            //System.out.println("Space released");
             spaceHeld = false;
         }
 

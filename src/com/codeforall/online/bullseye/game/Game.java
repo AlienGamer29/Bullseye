@@ -35,6 +35,7 @@ public class Game {
 
     public void initIntro() {
 
+        //System.out.println("Initializing intro");
         if (myKeyboard == null) {
             myKeyboard = new MyKeyboard(this);
         }
@@ -47,6 +48,7 @@ public class Game {
 
     public void initGame() {
 
+        //System.out.println("Initializing game");
         arrows.clear();
         targets.clear();
 
@@ -69,13 +71,14 @@ public class Game {
             highScore = HighScoreManager.getHighScore();
         }
 
+        //System.out.println("Score: " + score + ", Arrows available: " + maxArrows + ", Previews High Score: " + highScore);
         start();
     }
 
 
     public void start() {
 
-
+        //System.out.println("Starting game loop");
         if (running) {
             return;
         }
@@ -101,6 +104,7 @@ public class Game {
                 }
             }
 
+
             checkHighScore();
             endGame();
 
@@ -120,6 +124,7 @@ public class Game {
     }
 
     public void playerShoot() {
+        //System.out.println("Number of arrows left: " + maxArrows);
         if (maxArrows <= 0) {
             return;
         }
@@ -130,6 +135,7 @@ public class Game {
         arrows.add(player.shoot());
         maxArrows--;
         lastShotMs = now;
+        //System.out.println("Arrow decremented. Number of arrows left: " + maxArrows);
     }
 
     private void moveAllTargets() {
@@ -145,6 +151,7 @@ public class Game {
     }
 
     private void checkCollision() {
+        //System.out.println("Number of arrows: " + arrows.size() + ". Number of targets: " + targets.size());
         List<Arrows> aToRemove = new ArrayList<>();
         List<Target> tToRemove = new ArrayList<>();
 
@@ -166,6 +173,7 @@ public class Game {
                 double distance = Math.sqrt(dx * dx + dy * dy);
 
                 if (distance <= targetRadius) {
+                    //System.out.println(a.getType() + " hit target");
                     t.removePicture();
                     a.removePicture();
                     aToRemove.add(a);
@@ -178,19 +186,23 @@ public class Game {
 
         targets.removeAll(tToRemove);
         arrows.removeAll(aToRemove);
+        //System.out.println("Number of arrows: " + arrows.size() + ". Number of targets: " + targets.size());
     }
 
 
     private void overTheBush() {
+        //System.out.println("Arrows left: " + maxArrows);
         List<Arrows> toRemove = new ArrayList<>();
 
         for (Arrows a: arrows) {
             if (a.getX() > arena.getRight()) {
+                //System.out.println("Arrow out of arena");
                 a.removePicture();
                 toRemove.add(a);
             }
         }
         arrows.removeAll(toRemove);
+        //System.out.println("Arrows left: " + maxArrows);
     }
 
 
@@ -223,6 +235,7 @@ public class Game {
 
     public void resetGame() {
 
+        //System.out.println("Restarting game");
         stop();
 
         score = 0;
@@ -239,7 +252,7 @@ public class Game {
         targets.clear();
         highestScore.delete();
 
-
+        //System.out.println("Number of arrows: " + arrows.size() + "Arrows left: " + maxArrows + ". Number of targets: " + targets.size());
         initIntro();
     }
 
@@ -264,31 +277,31 @@ public class Game {
     }
 
     private void endGame() {
+        //System.out.println("Number of targets: " + targets.size() + ". Number of arrows left: " + maxArrows);
+        if (score > highScore) {
+            highScore = score;
+        }
+
         if (targets.isEmpty()) {
+            //System.out.println("All targets destroyed");
             gameState.displayGameWin();
             scoreDisplay(score);
             displayHighScore();
         } else {
+            //System.out.println("You have no more arrows");
             showGameOver();
             displayHighScore();
         }
 
-        if (score > highScore) {
-            highScore = score;
-        }
     }
 
     private void checkHighScore() {
         if (score > highScore) {
+            //System.out.println("Player Score: " + score + ", HighScore: " + highScore);
+            //System.out.println("New High Score? " + (score > highScore));
             HighScoreManager.saveHighScore(score);
-
         }
     }
-
-
-
-
-
 
 }
 
