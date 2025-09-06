@@ -1,23 +1,27 @@
 package com.codeforall.online.bullseye.game;
 
 import com.codeforall.online.bullseye.playables.Player;
+import com.codeforall.online.bullseye.playables.arrows.Arrows;
 import com.codeforall.simplegraphics.keyboard.Keyboard;
 import com.codeforall.simplegraphics.keyboard.KeyboardEvent;
 import com.codeforall.simplegraphics.keyboard.KeyboardEventType;
 import com.codeforall.simplegraphics.keyboard.KeyboardHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyKeyboard implements KeyboardHandler {
     private Keyboard myKeyboard;
     private Player player;
     private Arena arena;
     private Game game;
+    private List<Arrows> arrows = new ArrayList<>();
 
 
     private boolean spaceHeld = false;
 
     public MyKeyboard(Game game) {
         myKeyboard = new Keyboard(this);
-
         this.game = game;
         initKeys();
     }
@@ -26,6 +30,9 @@ public class MyKeyboard implements KeyboardHandler {
         this.arena = arena;
         this.player = player;
     }
+
+
+
 
     public void initKeys(){
         KeyboardEvent UP = new KeyboardEvent();
@@ -69,12 +76,18 @@ public class MyKeyboard implements KeyboardHandler {
         restart.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
 
         myKeyboard.addEventListener(restart);
+
+        KeyboardEvent cheatcode = new KeyboardEvent();
+        cheatcode.setKey(KeyboardEvent.KEY_W);
+        cheatcode.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+
+        myKeyboard.addEventListener(cheatcode);
     }
 
     @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
         int key = keyboardEvent.getKey();
-        if(keyboardEvent.getKey() == KeyboardEvent.KEY_UP){
+        if (keyboardEvent.getKey() == KeyboardEvent.KEY_UP) {
             //System.out.println("Up pressed");
             player.moveUp(arena);
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_DOWN) {
@@ -83,21 +96,27 @@ public class MyKeyboard implements KeyboardHandler {
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_Q) {
             //System.out.println("Q pressed");
             System.exit(0);
-        } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_S){
+        } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_S) {
             //System.out.println("S pressed");
             game.initGame();
             game.start();
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_R) {
             //System.out.println("R pressed");
             game.resetGame();
-        } else if(keyboardEvent.getKey() == KeyboardEvent.KEY_SPACE) {
+        } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_SPACE) {
             //System.out.println("Space pressed");
             if (!spaceHeld) {
                 spaceHeld = true;
                 game.playerShoot();
             }
+        } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_W) {
+                player.woosh(arena, 5000);
+                for (Arrows a : arrows) {
+                    a.woosh(arena, 0);
+                }
+            }
         }
-    }
+
 
     @Override
     public void keyReleased(KeyboardEvent keyboardEvent) {
