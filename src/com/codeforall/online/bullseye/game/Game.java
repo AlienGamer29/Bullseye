@@ -19,10 +19,10 @@ public class Game {
     private List<Target> targets = new ArrayList<>();
     private Player player;
     private int score = 0;
+    private int maxArrows = 20;
     private final int NUMBER_OF_TARGETS = 10;
     private final int DELAY = 16;
     private final int ARROWS_AVAILABLE = 15;
-    private int maxArrows;
     private Text scoreText;
     private Text arrowsText;
     private Text highestScore;
@@ -31,9 +31,18 @@ public class Game {
     private GameState gameState;
     private boolean running = false;
     private Thread gameThread;
+    private Sfx Shoot, Hit, Win, Lose;
+    private Sfx bgm;
     private int highScore = -1;
 
     public void initIntro() {
+
+        bgm = Sfx.load("/Sound/Background.wav");
+        bgm.prime();
+        Shoot = Sfx.load("/Sound/Arrow_Shoot.wav");
+        Hit = Sfx.load("/Sound/Target_Hit.wav");
+        Win = Sfx.load("/Sound/Game_win.wav");
+        Lose = Sfx.load("/Sound/Game_Over.wav");
 
         //System.out.println("Initializing intro");
         if (myKeyboard == null) {
@@ -49,6 +58,7 @@ public class Game {
     public void initGame() {
 
         //System.out.println("Initializing game");
+        bgm.playLoop();
         arrows.clear();
         targets.clear();
 
@@ -61,7 +71,6 @@ public class Game {
         maxArrows = ARROWS_AVAILABLE;
         scoreDisplay(score);
         maxArrowsDisplay(maxArrows);
-
 
         for (int i = 0; i < NUMBER_OF_TARGETS; i++) {
             targets.add(TargetFactory.createTarget());
@@ -105,6 +114,12 @@ public class Game {
             }
 
 
+            if (targets.isEmpty()) {
+                showGameWin();
+            } else {
+                showGameOver();
+            }
+
             checkHighScore();
             endGame();
 
@@ -123,6 +138,7 @@ public class Game {
         }
     }
 
+
     public void playerShoot() {
         //System.out.println("Number of arrows left: " + maxArrows);
         if (maxArrows <= 0) {
@@ -134,7 +150,9 @@ public class Game {
         }
         arrows.add(player.shoot());
         maxArrows--;
+
         lastShotMs = now;
+        Shoot.play();
         //System.out.println("Arrow decremented. Number of arrows left: " + maxArrows);
     }
 
@@ -174,6 +192,7 @@ public class Game {
 
                 if (distance <= targetRadius) {
                     //System.out.println(a.getType() + " hit target");
+                    Hit.play();
                     t.removePicture();
                     a.removePicture();
                     aToRemove.add(a);
@@ -228,9 +247,10 @@ public class Game {
 
     private void showGameOver() {
 
+        bgm.stop();
         gameState.displayGameOver();
         scoreDisplay(score);
-
+        Lose.play();
     }
 
     public void resetGame() {
@@ -276,6 +296,12 @@ public class Game {
         highestScore.draw();
     }
 
+    public void showGameWin() {
+        bgm.stop();
+        gameState.displayGameWin();
+        scoreDisplay(score);
+        Win.play();
+    }
     private void endGame() {
         //System.out.println("Number of targets: " + targets.size() + ". Number of arrows left: " + maxArrows);
         if (score > highScore) {
@@ -284,8 +310,7 @@ public class Game {
 
         if (targets.isEmpty()) {
             //System.out.println("All targets destroyed");
-            gameState.displayGameWin();
-            scoreDisplay(score);
+            showGameWin();
             displayHighScore();
         } else {
             //System.out.println("You have no more arrows");
