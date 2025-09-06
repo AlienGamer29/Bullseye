@@ -100,13 +100,8 @@ public class Game {
             }
 
 
-        if (targets.isEmpty()) {
-            gameState.displayGameWin();
-        } else if (maxArrows <= 0 && arrows.isEmpty()) {
-            showGameOver();
-        }
             if (targets.isEmpty()) {
-                showGameOver();
+                showGameWin();
             } else {
                 showGameOver();
             }
@@ -253,6 +248,11 @@ public class Game {
         initIntro();
     }
 
+    public void showGameWin() {
+        bgm.stop();
+        gameState.displayGameWin();
+        Win.play();
+    }
 
 
 }
