@@ -36,25 +36,16 @@ public class HighScoreManager {
 
         } finally {
             if (writeFile != null) {
-                cleanUpWriter(writer);
+                cleanUp(writer);
             }
         }
     }
 
-    private static void cleanUpWriter(BufferedWriter writer) {
-        try {
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static int getHighScore () {
-        FileReader readFile = null;
         BufferedReader reader = null;
 
         try {
-            readFile = new FileReader("highscore.dat");
+            FileReader readFile = new FileReader("highscore.dat");
             reader = new BufferedReader(readFile);
             String highscore = reader.readLine();
 
@@ -64,16 +55,16 @@ public class HighScoreManager {
             return 0;
 
         } finally {
-            if (readFile != null && reader != null) {
-                cleanUpReader(reader);
+            if (reader != null) {
+                cleanUp(reader);
             }
         }
 
     }
 
-    private static void cleanUpReader(BufferedReader reader) {
+    private static void cleanUp(Closeable resouce) {
         try {
-            reader.close();
+            resouce.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
