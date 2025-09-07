@@ -88,7 +88,6 @@ public class Player extends Entity {
             @Override
             public void run() {
                 x = oldX;
-                y = oldY;
                 picture.translate(oldX - newX, oldY - newY);
             }
 
