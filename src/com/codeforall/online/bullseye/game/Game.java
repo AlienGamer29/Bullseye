@@ -124,6 +124,8 @@ public class Game {
             endGame();
 
             running = false;
+
+            cheatcode();
         });
 
         gameThread.start();
@@ -154,6 +156,7 @@ public class Game {
         lastShotMs = now;
         Shoot.play();
         //System.out.println("Arrow decremented. Number of arrows left: " + maxArrows);
+
     }
 
     private void moveAllTargets() {
@@ -251,6 +254,14 @@ public class Game {
         gameState.displayGameOver();
         scoreDisplay(score);
         Lose.play();
+    }
+
+    public void cheatcode() {
+        List<Arrows> aAdd = new ArrayList<>();
+        player.woosh(arena, 0);
+        // call woosh on each arrow on the list
+        System.out.println("Number of arrows: " + arrows.size());
+
     }
 
     public void resetGame() {

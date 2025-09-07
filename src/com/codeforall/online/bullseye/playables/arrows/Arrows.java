@@ -5,6 +5,9 @@ import com.codeforall.online.bullseye.playables.Collidables;
 import com.codeforall.online.bullseye.playables.Entity;
 import com.codeforall.simplegraphics.pictures.Picture;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class Arrows extends Entity implements Collidables {
 
 
@@ -95,5 +98,34 @@ public class Arrows extends Entity implements Collidables {
 
     public ArrowTypes getType() {
         return type;
+    }
+
+    public void woosh(Arena arena, int delayMillis) {
+        int oldX = picture.getX();
+        int oldY = picture.getY();
+
+        int newX = arena.getLeft() + (arena.getWidth() - picture.getWidth()) / 2;
+        int newY = oldY;
+        this.x = newX;
+        this.y = newY;
+
+        picture.translate(newX - oldX, newY - oldY);
+
+        /*
+        if (!obstacles) {
+            picture.translate(newX - oldX, 0);
+        } else if (obstacles) {
+            picture.translate(obstacles.getX() + 20, 0);
+        }
+         */
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                picture.translate(oldX - newX, oldY - newY);
+            }
+
+        }, delayMillis);
     }
 }
