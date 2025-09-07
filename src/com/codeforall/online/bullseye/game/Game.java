@@ -13,23 +13,26 @@ import java.util.List;
 
 public class Game {
 
+    public static final String PREFIX = "resources/";
     private Arena arena;
     private MyKeyboard myKeyboard;
     private List<Arrows> arrows = new ArrayList<>();
     private List<Target> targets = new ArrayList<>();
     private Player player;
-    private TargetFactory targetFactory;
+    //private TargetFactory targetFactory;
+    int maxArrows = 20;
     private int score = 0;
-    private final int numberOfTargets = 10;
-    private final int delay = 16;
-    private int maxArrows = 20;
+    private final int NUMBER_OF_TARGETS = 10;
+    private final int DELAY = 16;
+    private final int ARROWS_AVAILABLE = 15;
     private Text scoreText;
     private Text arrowsText;
-    private final int cooldownMs = 600;
-    private long lastShotMs = -cooldownMs;
-    private Picture gameOver;
+    private Text highestScore;
+    private final int COOLDOWN_MS = 600;
+    private long lastShotMs = -COOLDOWN_MS;
     private GameState gameState;
-    public static final String PREFIX = "resources/";
+    private boolean running = false;
+    private Thread gameThread;
     private Sfx Shoot, Hit, Win, Lose;
     private Sfx bgm;
     private final List<Obstacle> obstacles = new ArrayList<>();
@@ -37,11 +40,12 @@ public class Game {
     private static final int MIN_GAP_FROM_PLAYER = 100;
     //private static int rightMarginFromTargets = 100;
     private int wallW = 133, wallH = 119;
+    private int highScore = -1;
 
     public void initIntro() {
 
-        arena = new Arena();
-        player = new Player(arena.getBUSHPADDING(), arena.getHeight()/2);
+        //arena = new Arena();
+        // = new Player(arena.getBUSHPADDING(), arena.getHeight()/2);
         bgm = Sfx.load("/Sound/Background.wav");
         bgm.prime();
         Shoot = Sfx.load("/Sound/Arrow_Shoot.wav");
@@ -49,67 +53,108 @@ public class Game {
         Win = Sfx.load("/Sound/Game_win.wav");
         Lose = Sfx.load("/Sound/Game_Over.wav");
 
-        myKeyboard = new MyKeyboard(player, arena, this);
-        gameState = new GameState();
-
-        scoreDisplay(score);
-        maxArrowsDisplay(maxArrows);
-
-
-        for(int i = 0; i < numberOfTargets; i++) {
-            targets.add(TargetFactory.createTarget());
+        //System.out.println("Initializing intro");
+        if (myKeyboard == null) {
+            myKeyboard = new MyKeyboard(this);
         }
-
+        if (gameState == null) {
+            gameState = new GameState();
+        }
         gameState.displayIntro(true);
-
     }
+
 
     public void initGame() {
 
-        gameState.displayIntro(false);
+        //System.out.println("Initializing game");
         bgm.playLoop();
+        arrows.clear();
+        targets.clear();
 
-    }
+        gameState.displayIntro(false);
+        arena = new Arena();
+        player = new Player(arena.getBUSH_PUDDING(), arena.getHeight()/2);
+        myKeyboard.setArenaAndPlayer(arena, player);
 
-    public void start() throws InterruptedException {
-
-        while (!targets.isEmpty() && (maxArrows > 0 || !arrows.isEmpty())) {
-
-            Thread.sleep(delay);
-
-            maybeSpawnObstacles();
-            moveAllArrows();
-            moveAllTargets();
-            checkCollision();
-            checkArrowObstacleCollisions();
-            overTheBush();
-            updateHUD();
-
-        }
-
-        if (targets.isEmpty()) {
-            showGameOver();
-        } else if (maxArrows <= 0 && arrows.isEmpty()) {
-            showGameOver();
-        }
-
-    }
-
-    private void showGameOver() {
-        bgm.stop();
-        arena.displayArena(false);
-        gameState.displayGameOver();
+        score = 0;
+        maxArrows = ARROWS_AVAILABLE;
         scoreDisplay(score);
-        Lose.play();
+        maxArrowsDisplay(maxArrows);
+
+        for (int i = 0; i < NUMBER_OF_TARGETS; i++) {
+            targets.add(TargetFactory.createTarget());
+        }
+
+        if (highScore == -1)  {
+            highScore = HighScoreManager.getHighScore();
+        }
+
+        //System.out.println("Score: " + score + ", Arrows available: " + maxArrows + ", Previews High Score: " + highScore);
+        start();
+    }
+
+
+    public void start() {
+
+        //System.out.println("Starting game loop");
+        if (running) {
+            return;
+        }
+
+        running = true;
+
+        gameThread = new Thread(() -> {
+            while (running
+                    && !targets.isEmpty()
+                    && (maxArrows > 0 || !arrows.isEmpty())) {
+
+                maybeSpawnObstacles();
+                checkArrowObstacleCollisions();
+                moveAllArrows();
+                moveAllTargets();
+                checkCollision();
+                overTheBush();
+                updateHUD();
+
+                try {
+                    Thread.sleep(DELAY);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+
+        }
+
+
+
+            checkHighScore();
+            endGame();
+
+            running = false;
+
+            cheatcode();
+        });
+
+        gameThread.start();
+
 
     }
+
+    private void stop() {
+        running = false;
+        if (gameThread != null) {
+            gameThread.interrupt();
+        }
+    }
+
 
     public void playerShoot() {
+        //System.out.println("Number of arrows left: " + maxArrows);
         if (maxArrows <= 0) {
             return;
         }
         long now = System.currentTimeMillis();
-        if (now - lastShotMs < cooldownMs) {
+        if (now - lastShotMs < COOLDOWN_MS) {
             return;
         }
         arrows.add(player.shoot());
@@ -117,6 +162,8 @@ public class Game {
 
         lastShotMs = now;
         Shoot.play();
+        //System.out.println("Arrow decremented. Number of arrows left: " + maxArrows);
+
     }
 
     private void moveAllTargets() {
@@ -132,6 +179,7 @@ public class Game {
     }
 
     private void checkCollision() {
+        //System.out.println("Number of arrows: " + arrows.size() + ". Number of targets: " + targets.size());
         List<Arrows> aToRemove = new ArrayList<>();
         List<Target> tToRemove = new ArrayList<>();
 
@@ -153,12 +201,13 @@ public class Game {
                 double distance = Math.sqrt(dx * dx + dy * dy);
 
                 if (distance <= targetRadius) {
+                    //System.out.println(a.getType() + " hit target");
                     Hit.play();
                     t.removePicture();
                     a.removePicture();
                     aToRemove.add(a);
                     tToRemove.add(t);
-                    score += 10;
+                    score += a.getType().getSCORE();
                     break;
                 }
             }
@@ -166,19 +215,25 @@ public class Game {
 
         targets.removeAll(tToRemove);
         arrows.removeAll(aToRemove);
+        //System.out.println("Number of arrows: " + arrows.size() + ". Number of targets: " + targets.size());
     }
 
+
     private void overTheBush() {
+        //System.out.println("Arrows left: " + maxArrows);
         List<Arrows> toRemove = new ArrayList<>();
 
         for (Arrows a: arrows) {
             if (a.getX() > arena.getRight()) {
+                //System.out.println("Arrow out of arena");
                 a.removePicture();
                 toRemove.add(a);
             }
         }
         arrows.removeAll(toRemove);
+        //System.out.println("Arrows left: " + maxArrows);
     }
+
 
     private void scoreDisplay(int score) {
         scoreText = new Text(arena.getRight()-100, 10, "Score: " + score);
@@ -200,6 +255,97 @@ public class Game {
         arrowsText.setText("Arrows left: " + maxArrows);
     }
 
+    private void showGameOver() {
+
+        bgm.stop();
+        gameState.displayGameOver();
+        scoreDisplay(score);
+        Lose.play();
+    }
+
+    public void cheatcode() {
+        List<Arrows> aAdd = new ArrayList<>();
+        player.woosh(arena, 0);
+        // call woosh on each arrow on the list
+        System.out.println("Number of arrows: " + arrows.size());
+
+    }
+
+    public void resetGame() {
+
+        //System.out.println("Restarting game");
+        stop();
+
+        score = 0;
+        maxArrows = ARROWS_AVAILABLE;
+
+        removeArrowsPicture();
+        removeTargetsPicture();
+        player.removePicture();
+        arena.removePicture();
+        gameState.removePicture();
+        scoreText.delete();
+        arrowsText.delete();
+        arrows.clear();
+        targets.clear();
+        highestScore.delete();
+
+        //System.out.println("Number of arrows: " + arrows.size() + "Arrows left: " + maxArrows + ". Number of targets: " + targets.size());
+        initIntro();
+    }
+
+    private void removeArrowsPicture() {
+        for (Arrows a : arrows) {
+            a.removePicture();
+        }
+    }
+
+    private void removeTargetsPicture() {
+        for (Target t : targets) {
+            t.removePicture();
+        }
+    }
+
+
+    private void displayHighScore() {
+        highestScore = new Text(500, 150, "Highest Score: " + highScore);
+        highestScore.setColor(Color.WHITE);
+        highestScore.grow(100, 30);
+        highestScore.draw();
+    }
+
+    public void showGameWin() {
+        bgm.stop();
+        gameState.displayGameWin();
+        scoreDisplay(score);
+        Win.play();
+    }
+    private void endGame() {
+        //System.out.println("Number of targets: " + targets.size() + ". Number of arrows left: " + maxArrows);
+        if (score > highScore) {
+            highScore = score;
+        }
+
+        if (targets.isEmpty()) {
+            //System.out.println("All targets destroyed");
+            showGameWin();
+            displayHighScore();
+        } else {
+            //System.out.println("You have no more arrows");
+            showGameOver();
+            displayHighScore();
+        }
+
+    }
+
+    private void checkHighScore() {
+        if (score > highScore) {
+            //System.out.println("Player Score: " + score + ", HighScore: " + highScore);
+            //System.out.println("New High Score? " + (score > highScore));
+            HighScoreManager.saveHighScore(score);
+        }
+    }
+
     public void maybeSpawnObstacles() {
 
         //Picture wallObstacle = new Picture(0,0, "resources/wallObstacle133x100.png");
@@ -209,24 +355,24 @@ public class Game {
         if (wallSpawned>=2) return;
 
         if (wallSpawned == 0) {
-        boolean arrowCondition = (maxArrows <= 15);
-        boolean targetsCondition = (targets.size() <= numberOfTargets / 2);
-        if (!(arrowCondition && targetsCondition)) return;
+            boolean arrowCondition = (maxArrows <= 15);
+            boolean targetsCondition = (targets.size() <= numberOfTargets / 2);
+            if (!(arrowCondition && targetsCondition)) return;
 
-        int minY = arena.getTopBush();
-        int maxY = arena.getBottomBush()/2 - wallH;
+            int minY = arena.getTopBush();
+            int maxY = arena.getBottomBush()/2 - wallH;
 
-        //int playerRight = player.getRight();
-        int minX = player.getRight() + MIN_GAP_FROM_PLAYER;
-        int maxX = setDistanceFromTargets() - wallW;
+            //int playerRight = player.getRight();
+            int minX = player.getRight() + MIN_GAP_FROM_PLAYER;
+            int maxX = setDistanceFromTargets() - wallW;
 
-        if (maxY < minY) maxY = minY;
-        if (maxX < minX) maxX = minX;
+            if (maxY < minY) maxY = minY;
+            if (maxX < minX) maxX = minX;
 
-        int x = rand(minX, maxX);
-        int y = rand(minY, maxY);
-        //int x = java.util.concurrent.ThreadLocalRandom.current().nextInt(minX, maxX + 1);
-        //int y = java.util.concurrent.ThreadLocalRandom.current().nextInt(minY, maxY + 1);
+            int x = rand(minX, maxX);
+            int y = rand(minY, maxY);
+            //int x = java.util.concurrent.ThreadLocalRandom.current().nextInt(minX, maxX + 1);
+            //int y = java.util.concurrent.ThreadLocalRandom.current().nextInt(minY, maxY + 1);
 
             Obstacle obstacle = new Obstacle(x, y);
             obstacles.add(obstacle);
@@ -312,9 +458,6 @@ public class Game {
     }
 
 }
-
-
-
 
 
 

@@ -5,11 +5,15 @@ import com.codeforall.online.bullseye.playables.Collidables;
 import com.codeforall.online.bullseye.playables.Entity;
 import com.codeforall.simplegraphics.pictures.Picture;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class Arrows extends Entity implements Collidables {
 
 
-    public String arrowPath;
-    public int arrowSpeed;
+    private String arrowPath;
+    private int arrowSpeed;
+    private ArrowTypes type;
 
     public Arrows(int x, int y) {
         super(x, y);
@@ -17,12 +21,8 @@ public class Arrows extends Entity implements Collidables {
         setPicture();
         picture.grow(-50, -25);
         picture.translate(-50, -25);
-        picture.draw();
+        displayArrows(true);
         setSpeed();
-    }
-
-    public void removePicture(){
-        picture.delete();
     }
 
     public void setPicture() {
@@ -46,19 +46,25 @@ public class Arrows extends Entity implements Collidables {
 
         switch (randomArrowType){
             case 0:
-                arrowPath = ArrowTypes.BLUE.getPath();
-                arrowSpeed = ArrowTypes.BLUE.getSpeed();
+                type = ArrowTypes.BLUE;
                 break;
             case 1:
-                arrowPath = ArrowTypes.GREEN.getPath();
-                arrowSpeed = ArrowTypes.GREEN.getSpeed();
+                type = ArrowTypes.GREEN;
                 break;
-            case 2:
-            case 3:
-            case 4:
-                arrowPath = ArrowTypes.RED.getPath();
-                arrowSpeed = ArrowTypes.RED.getSpeed();
+            default:
+                type = ArrowTypes.RED;
                 break;
+        }
+
+        arrowPath = type.getPATH();
+        arrowSpeed = type.getSPEED();
+    }
+
+    public void displayArrows(Boolean show) {
+        if (show) {
+            picture.draw();
+        } else {
+            picture.delete();
         }
     }
 
@@ -88,5 +94,38 @@ public class Arrows extends Entity implements Collidables {
     @Override
     public int getHeight() {
         return picture.getHeight();
+    }
+
+    public ArrowTypes getType() {
+        return type;
+    }
+
+    public void woosh(Arena arena, int delayMillis) {
+        int oldX = picture.getX();
+        int oldY = picture.getY();
+
+        int newX = arena.getLeft() + (arena.getWidth() - picture.getWidth()) / 2;
+        int newY = oldY;
+        this.x = newX;
+        this.y = newY;
+
+        picture.translate(newX - oldX, newY - oldY);
+
+        /*
+        if (!obstacles) {
+            picture.translate(newX - oldX, 0);
+        } else if (obstacles) {
+            picture.translate(obstacles.getX() + 20, 0);
+        }
+         */
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                picture.translate(oldX - newX, oldY - newY);
+            }
+
+        }, delayMillis);
     }
 }

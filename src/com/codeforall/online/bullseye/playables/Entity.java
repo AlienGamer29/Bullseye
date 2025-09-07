@@ -15,4 +15,8 @@ public abstract class Entity {
         this.y = y;
     }
 
+    public void removePicture() {
+        picture.delete();
+    }
+
 }

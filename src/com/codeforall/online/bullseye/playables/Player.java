@@ -4,6 +4,9 @@ import com.codeforall.online.bullseye.game.Arena;
 import com.codeforall.online.bullseye.playables.arrows.Arrows;
 import com.codeforall.simplegraphics.pictures.Picture;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import static com.codeforall.online.bullseye.game.Game.PREFIX;
 
 public class Player extends Entity {
@@ -58,6 +61,40 @@ public class Player extends Entity {
         this.picture.draw();
     }
 
+    public void woosh(Arena arena, int delayMillis) {
+        // guardar a posição atual antes de woosh -> translate para a nova posição -> guarda a nova posição -> translate para a posição antiga
+        int oldX = picture.getX();
+        int oldY = picture.getY();
+
+        int newX = arena.getLeft() + (arena.getWidth() - picture.getWidth()) / 2;
+        int newY = oldY;
+
+        this.x = newX;
+        this.y = newY;
+
+        picture.translate(newX - oldX, newY - oldY);
+
+        /*
+        if (!obstacles) {
+            picture.translate(newX - oldX, 0);
+        } else if (obstacles) {
+            picture.translate(obstacles.getX() + 20, 0);
+        }
+
+        */
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                x = oldX;
+                picture.translate(oldX - newX, oldY - newY);
+            }
+
+        }, delayMillis);
+    }
+
+
     public int getX() {
         return x;
     }
@@ -78,8 +115,6 @@ public class Player extends Entity {
     public int getLeft() {
         return x - picture.getWidth();
     }
-
-
 
 
 }
