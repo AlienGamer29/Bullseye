@@ -6,9 +6,12 @@ import com.codeforall.simplegraphics.pictures.Picture;
 
 public class Obstacle extends Entity implements Collidables {
 
+    private ObstacleType obstacleType;
+
     public Obstacle(int x, int y) {
         super(x, y);
-        this.picture = new Picture(x,y, "resources/wallObstacle133x100.png");;
+        obstacleType = randomObstacle();
+        this.picture = new Picture(x,y,obstacleType.getPath());
         this.picture.draw();
     }
 
@@ -51,5 +54,14 @@ public class Obstacle extends Entity implements Collidables {
     public void removePicture() {
         picture.delete();
 
+    }
+
+    public ObstacleType randomObstacle(){
+        int randomNumber = (int)(Math.random()*10);
+        if (randomNumber%2 == 1){
+            return ObstacleType.HAY;
+        } else {
+            return ObstacleType.WALL;
+        }
     }
 }

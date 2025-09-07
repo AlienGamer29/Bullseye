@@ -7,7 +7,6 @@ import com.codeforall.online.bullseye.playables.target.TargetFactory;
 import com.codeforall.simplegraphics.graphics.Color;
 import com.codeforall.simplegraphics.graphics.Text;
 import com.codeforall.simplegraphics.pictures.Picture;
-import org.w3c.dom.ls.LSOutput;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +33,10 @@ public class Game {
     private Sfx Shoot, Hit, Win, Lose;
     private Sfx bgm;
     private final List<Obstacle> obstacles = new ArrayList<>();
-    private boolean wallSpawned = false;
+    private int wallSpawned = 0;
     private static final int MIN_GAP_FROM_PLAYER = 100;
-    private static final int RIGHT_MARGIN_FROM_TARGETS = 100;
-    private int wallW = 0, wallH = 0;
+    //private static int rightMarginFromTargets = 100;
+    private int wallW = 133, wallH = 119;
 
     public void initIntro() {
 
@@ -69,9 +68,6 @@ public class Game {
 
         gameState.displayIntro(false);
         bgm.playLoop();
-        Picture wallProbve = new Picture(0,0, "resources/wallObstacle133x100.png");
-        wallW = wallProbve.getWidth();
-        wallH = wallProbve.getHeight();
 
     }
 
@@ -81,7 +77,7 @@ public class Game {
 
             Thread.sleep(delay);
 
-            maybeSpawnWall();
+            maybeSpawnObstacles();
             moveAllArrows();
             moveAllTargets();
             checkCollision();
@@ -98,7 +94,6 @@ public class Game {
         }
 
     }
-
 
     private void showGameOver() {
         bgm.stop();
@@ -173,7 +168,6 @@ public class Game {
         arrows.removeAll(aToRemove);
     }
 
-
     private void overTheBush() {
         List<Arrows> toRemove = new ArrayList<>();
 
@@ -185,7 +179,6 @@ public class Game {
         }
         arrows.removeAll(toRemove);
     }
-
 
     private void scoreDisplay(int score) {
         scoreText = new Text(arena.getRight()-100, 10, "Score: " + score);
@@ -207,30 +200,67 @@ public class Game {
         arrowsText.setText("Arrows left: " + maxArrows);
     }
 
-    public void maybeSpawnWall() {
-        if (wallSpawned) return;
+    public void maybeSpawnObstacles() {
 
+        //Picture wallObstacle = new Picture(0,0, "resources/wallObstacle133x100.png");
+        //wallW = wallObstacle.getWidth();
+        //wallH = wallObstacle.getHeight();
+
+        if (wallSpawned>=2) return;
+
+        if (wallSpawned == 0) {
         boolean arrowCondition = (maxArrows <= 15);
         boolean targetsCondition = (targets.size() <= numberOfTargets / 2);
         if (!(arrowCondition && targetsCondition)) return;
 
         int minY = arena.getTopBush();
-        int maxY = arena.getBottomBush() - wallH;
+        int maxY = arena.getBottomBush()/2 - wallH;
 
-        int playerRight = player.getRight();
+        //int playerRight = player.getRight();
         int minX = player.getRight() + MIN_GAP_FROM_PLAYER;
-        int maxX = arena.getRight() - RIGHT_MARGIN_FROM_TARGETS - wallW;
+        int maxX = setDistanceFromTargets() - wallW;
 
         if (maxY < minY) maxY = minY;
         if (maxX < minX) maxX = minX;
 
-        int x = java.util.concurrent.ThreadLocalRandom.current().nextInt(minX, maxX + 1);
-        int y = java.util.concurrent.ThreadLocalRandom.current().nextInt(minY, maxY + 1);
+        int x = rand(minX, maxX);
+        int y = rand(minY, maxY);
+        //int x = java.util.concurrent.ThreadLocalRandom.current().nextInt(minX, maxX + 1);
+        //int y = java.util.concurrent.ThreadLocalRandom.current().nextInt(minY, maxY + 1);
 
-        Obstacle wall = new Obstacle(x, y);
-        obstacles.add(wall);
-        wallSpawned = true;
+            Obstacle obstacle = new Obstacle(x, y);
+            obstacles.add(obstacle);
+            wallSpawned += 1;
+        }
+        if (wallSpawned == 1) {
+
+            boolean arrowCondition = (maxArrows <= 5);
+            boolean targetsCondition = (targets.size() <= numberOfTargets / 2);
+            if (!(arrowCondition && targetsCondition)) return;
+
+            int minY = arena.getBottomBush()/2;
+            int maxY = arena.getBottomBush() - wallH;
+
+            //int playerRight = player.getRight();
+            int minX = player.getRight() + MIN_GAP_FROM_PLAYER;
+            int maxX = setDistanceFromTargets() - wallW;
+
+            if (maxY < minY) maxY = minY;
+            if (maxX < minX) maxX = minX;
+
+            int x = rand(minX, maxX);
+            int y = rand(minY, maxY);
+            //int x = java.util.concurrent.ThreadLocalRandom.current().nextInt(minX, maxX + 1);
+            //int y = java.util.concurrent.ThreadLocalRandom.current().nextInt(minY, maxY + 1);
+
+            Obstacle obstacle = new Obstacle(x, y);
+            obstacles.add(obstacle);
+            wallSpawned += 1;
+        }
+
+
     }
+
     private int rand(int min, int maxInclusive) {
         return java.util.concurrent.ThreadLocalRandom.current()
                 .nextInt(min, maxInclusive + 1);
@@ -244,8 +274,10 @@ public class Game {
         for (Arrows a : arrows) {
             for (Obstacle o : obstacles) {
                 if (intersects(a,o)) {
+                    Hit.play();
                     a.removePicture();
                     toRemove.add(a);
+                    score-=10;
                     break;
                 }
             }
@@ -262,7 +294,21 @@ public class Game {
             o.removePicture();
         }
         obstacles.clear();
-        wallSpawned = false;
+        wallSpawned = 0;
+    }
+
+    private int setDistanceFromTargets() {
+
+        Target current = targets.get(0);
+        int currentPositionX = current.getX();
+
+        for (Target t : targets) {
+            if (t.getX()<currentPositionX) {
+                currentPositionX = t.getX();
+            }
+        }
+
+        return currentPositionX - 20;
     }
 
 }
