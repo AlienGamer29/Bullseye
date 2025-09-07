@@ -58,5 +58,28 @@ public class Player extends Entity {
         this.picture.draw();
     }
 
+    public int getX() {
+        return x;
+    }
+    public int getY() {
+        return y;
+    }
+
+    public int getWidth() {
+        return picture.getWidth();
+    }
+    public int getHeight() {
+        return picture.getHeight();
+    }
+
+    public int getRight() {
+        return x + picture.getWidth();
+    }
+    public int getLeft() {
+        return x - picture.getWidth();
+    }
+
+
+
 
 }
