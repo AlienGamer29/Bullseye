@@ -113,13 +113,6 @@ public class Game {
                 }
             }
 
-
-            if (targets.isEmpty()) {
-                showGameWin();
-            } else {
-                showGameOver();
-            }
-
             checkHighScore();
             endGame();
 
