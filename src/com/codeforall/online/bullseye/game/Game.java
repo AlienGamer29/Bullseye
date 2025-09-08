@@ -6,6 +6,7 @@ import com.codeforall.online.bullseye.playables.target.Target;
 import com.codeforall.online.bullseye.playables.target.TargetFactory;
 import com.codeforall.simplegraphics.graphics.Color;
 import com.codeforall.simplegraphics.graphics.Text;
+import com.codeforall.simplegraphics.pictures.Picture;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +18,10 @@ public class Game {
     private MyKeyboard myKeyboard;
     private List<Arrows> arrows = new ArrayList<>();
     private List<Target> targets = new ArrayList<>();
+    private List<Obstacle> obstacles = new ArrayList<>();
     private Player player;
+    int maxArrows;
     private int score = 0;
-    private int maxArrows = 20;
     private final int NUMBER_OF_TARGETS = 10;
     private final int DELAY = 16;
     private final int ARROWS_AVAILABLE = 15;
@@ -33,6 +35,8 @@ public class Game {
     private Thread gameThread;
     private Sfx Shoot, Hit, Win, Lose;
     private Sfx bgm;
+    private int wallSpawned = 0;
+    private static final int MIN_GAP_FROM_PLAYER = 100;
     private int highScore = -1;
 
     public void initIntro() {
@@ -95,14 +99,15 @@ public class Game {
         running = true;
 
         gameThread = new Thread(() -> {
-            while (running
-                    && !targets.isEmpty()
+            while (running && !targets.isEmpty()
                     && (maxArrows > 0 || !arrows.isEmpty())) {
 
                 moveAllArrows();
                 moveAllTargets();
                 checkCollision();
                 overTheBush();
+                maybeSpawnObstacles();
+                checkArrowObstacleCollisions();
                 updateHUD();
 
                 try {
@@ -111,7 +116,8 @@ public class Game {
                     Thread.currentThread().interrupt();
                     break;
                 }
-            }
+
+        }
 
             checkHighScore();
             endGame();
@@ -275,6 +281,7 @@ public class Game {
         arrows.clear();
         targets.clear();
         highestScore.delete();
+        clearObstacles();
 
         //System.out.println("Number of arrows: " + arrows.size() + "Arrows left: " + maxArrows + ". Number of targets: " + targets.size());
         initIntro();
@@ -306,6 +313,7 @@ public class Game {
         scoreDisplay(score);
         Win.play();
     }
+
     private void endGame() {
         //System.out.println("Number of targets: " + targets.size() + ". Number of arrows left: " + maxArrows);
         if (score > highScore) {
@@ -330,6 +338,115 @@ public class Game {
             //System.out.println("New High Score? " + (score > highScore));
             HighScoreManager.saveHighScore(score);
         }
+    }
+
+    public void maybeSpawnObstacles() {
+
+        int wallW = 133, wallH = 119;
+
+        if (wallSpawned>=2) return;
+
+        if (wallSpawned == 0) {
+            boolean arrowCondition = (maxArrows <= 10);
+            boolean targetsCondition = (targets.size() <= NUMBER_OF_TARGETS / 2);
+            if (!(arrowCondition && targetsCondition)) return;
+
+            int minY = arena.getTopBush();
+            int maxY = arena.getBottomBush()/2 - wallH;
+
+            //int playerRight = player.getRight();
+            int minX = player.getRight() + MIN_GAP_FROM_PLAYER;
+            int maxX = setDistanceFromTargets() - wallW;
+
+            if (maxY < minY) maxY = minY;
+            if (maxX < minX) maxX = minX;
+
+            int x = rand(minX, maxX);
+            int y = rand(minY, maxY);
+            //int x = java.util.concurrent.ThreadLocalRandom.current().nextInt(minX, maxX + 1);
+            //int y = java.util.concurrent.ThreadLocalRandom.current().nextInt(minY, maxY + 1);
+
+            Obstacle obstacle = new Obstacle(x, y);
+            obstacles.add(obstacle);
+            wallSpawned += 1;
+        }
+        if (wallSpawned == 1) {
+
+            boolean arrowCondition = (maxArrows <= 5);
+            boolean targetsCondition = (targets.size() <= NUMBER_OF_TARGETS / 2);
+            if (!(arrowCondition && targetsCondition)) return;
+
+            int minY = arena.getBottomBush()/2;
+            int maxY = arena.getBottomBush() - wallH;
+
+            //int playerRight = player.getRight();
+            int minX = player.getRight() + MIN_GAP_FROM_PLAYER;
+            int maxX = setDistanceFromTargets() - wallW;
+
+            if (maxY < minY) maxY = minY;
+            if (maxX < minX) maxX = minX;
+
+            int x = rand(minX, maxX);
+            int y = rand(minY, maxY);
+            //int x = java.util.concurrent.ThreadLocalRandom.current().nextInt(minX, maxX + 1);
+            //int y = java.util.concurrent.ThreadLocalRandom.current().nextInt(minY, maxY + 1);
+
+            Obstacle obstacle = new Obstacle(x, y);
+            obstacles.add(obstacle);
+            wallSpawned += 1;
+        }
+
+
+    }
+
+    private int rand(int min, int maxInclusive) {
+        return java.util.concurrent.ThreadLocalRandom.current()
+                .nextInt(min, maxInclusive + 1);
+    }
+
+    private void checkArrowObstacleCollisions() {
+        if (obstacles.isEmpty() || arrows.isEmpty()) return;
+
+        List<Arrows> toRemove = new ArrayList<>();
+
+        for (Arrows a : arrows) {
+            for (Obstacle o : obstacles) {
+                if (intersects(a,o)) {
+                    Hit.play();
+                    a.removePicture();
+                    toRemove.add(a);
+                    score-=10;
+                    break;
+                }
+            }
+        }
+        arrows.removeAll(toRemove);
+    }
+
+    private boolean intersects(Collidables a, Collidables b) {
+        return a.getMaxX() > b.getX() && a.getX() < b.getMaxX() &&  a.getMaxY() > b.getY() && a.getY() < b.getMaxY();
+    }
+
+    private void clearObstacles() {
+        for (Obstacle o : obstacles) {
+            o.removePicture();
+        }
+        obstacles.clear();
+        wallSpawned = 0;
+    }
+
+    private int setDistanceFromTargets() {
+
+        Target current = targets.get(0);
+        int currentPositionX = current.getX();
+
+        for (Target t : targets) {
+            if (t.getX()<currentPositionX) {
+                currentPositionX = t.getX();
+            }
+        }
+        System.out.println((currentPositionX - (arena.getWidth() / 2)));
+        return (currentPositionX-(arena.getWidth()/2));
     }
 
 }

@@ -81,7 +81,7 @@ public class Player extends Entity {
             picture.translate(obstacles.getX() + 20, 0);
         }
 
-         */
+        */
 
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -93,4 +93,28 @@ public class Player extends Entity {
 
         }, delayMillis);
     }
+
+
+    public int getX() {
+        return x;
+    }
+    public int getY() {
+        return y;
+    }
+
+    public int getWidth() {
+        return picture.getWidth();
+    }
+    public int getHeight() {
+        return picture.getHeight();
+    }
+
+    public int getRight() {
+        return x + picture.getWidth();
+    }
+    public int getLeft() {
+        return x - picture.getWidth();
+    }
+
+
 }
