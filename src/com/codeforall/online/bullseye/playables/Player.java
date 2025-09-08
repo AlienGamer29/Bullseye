@@ -1,6 +1,7 @@
 package com.codeforall.online.bullseye.playables;
 
 import com.codeforall.online.bullseye.game.Arena;
+import com.codeforall.online.bullseye.game.Obstacle;
 import com.codeforall.online.bullseye.playables.arrows.Arrows;
 import com.codeforall.simplegraphics.pictures.Picture;
 
@@ -10,7 +11,6 @@ import java.util.TimerTask;
 import static com.codeforall.online.bullseye.game.Game.PREFIX;
 
 public class Player extends Entity {
-
 
     public Player(int x, int y) {
         super(x, y);
@@ -61,8 +61,10 @@ public class Player extends Entity {
         this.picture.draw();
     }
 
+
     public void woosh(Arena arena, int delayMillis) {
         // guardar a posição atual antes de woosh -> translate para a nova posição -> guarda a nova posição -> translate para a posição antiga
+
         int oldX = picture.getX();
         int oldY = picture.getY();
 
@@ -73,15 +75,6 @@ public class Player extends Entity {
         this.y = newY;
 
         picture.translate(newX - oldX, newY - oldY);
-
-        /*
-        if (!obstacles) {
-            picture.translate(newX - oldX, 0);
-        } else if (obstacles) {
-            picture.translate(obstacles.getX() + 20, 0);
-        }
-
-        */
 
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {

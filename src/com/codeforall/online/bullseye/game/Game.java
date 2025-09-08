@@ -124,7 +124,6 @@ public class Game {
 
             running = false;
 
-            cheatcode();
         });
 
         gameThread.start();
@@ -255,13 +254,6 @@ public class Game {
         Lose.play();
     }
 
-    public void cheatcode() {
-        List<Arrows> aAdd = new ArrayList<>();
-        player.woosh(arena, 0);
-        // call woosh on each arrow on the list
-        System.out.println("Number of arrows: " + arrows.size());
-
-    }
 
     public void resetGame() {
 
@@ -363,8 +355,6 @@ public class Game {
 
             int x = rand(minX, maxX);
             int y = rand(minY, maxY);
-            //int x = java.util.concurrent.ThreadLocalRandom.current().nextInt(minX, maxX + 1);
-            //int y = java.util.concurrent.ThreadLocalRandom.current().nextInt(minY, maxY + 1);
 
             Obstacle obstacle = new Obstacle(x, y);
             obstacles.add(obstacle);

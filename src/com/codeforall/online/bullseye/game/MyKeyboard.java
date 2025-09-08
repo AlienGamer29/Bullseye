@@ -111,7 +111,7 @@ public class MyKeyboard implements KeyboardHandler {
             }
         } else if (keyboardEvent.getKey() == KeyboardEvent.KEY_W) {
             //System.out.println("W pressed");
-                player.woosh(arena, 5000);
+             player.woosh(arena, 5000);
                 for (Arrows a : arrows) {
                     a.woosh(arena, 0);
                 }

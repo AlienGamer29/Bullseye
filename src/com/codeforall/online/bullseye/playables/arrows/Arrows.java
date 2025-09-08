@@ -1,6 +1,7 @@
 package com.codeforall.online.bullseye.playables.arrows;
 
 import com.codeforall.online.bullseye.game.Arena;
+import com.codeforall.online.bullseye.game.Obstacle;
 import com.codeforall.online.bullseye.playables.Collidables;
 import com.codeforall.online.bullseye.playables.Entity;
 import com.codeforall.simplegraphics.pictures.Picture;
@@ -9,7 +10,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Arrows extends Entity implements Collidables {
-
 
     private String arrowPath;
     private int arrowSpeed;
@@ -100,7 +100,7 @@ public class Arrows extends Entity implements Collidables {
         return type;
     }
 
-    public void woosh(Arena arena, int delayMillis) {
+        public void woosh(Arena arena, int delayMillis) {
         int oldX = picture.getX();
         int oldY = picture.getY();
 
@@ -110,14 +110,6 @@ public class Arrows extends Entity implements Collidables {
         this.y = newY;
 
         picture.translate(newX - oldX, newY - oldY);
-
-        /*
-        if (!obstacles) {
-            picture.translate(newX - oldX, 0);
-        } else if (obstacles) {
-            picture.translate(obstacles.getX() + 20, 0);
-        }
-         */
 
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {

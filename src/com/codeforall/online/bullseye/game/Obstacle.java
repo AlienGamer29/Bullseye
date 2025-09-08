@@ -13,7 +13,10 @@ public class Obstacle extends Entity implements Collidables {
         obstacleType = randomObstacle();
         this.picture = new Picture(x,y,obstacleType.getPath());
         this.picture.draw();
+        this.x = x;
+        this.y = y;
     }
+
 
     @Override
     public int getX() {
