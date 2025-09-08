@@ -2,11 +2,11 @@ package com.codeforall.online.bullseye.game;
 
 import com.codeforall.online.bullseye.playables.*;
 import com.codeforall.online.bullseye.playables.arrows.Arrows;
+import com.codeforall.online.bullseye.playables.obstacle.Obstacle;
 import com.codeforall.online.bullseye.playables.target.Target;
 import com.codeforall.online.bullseye.playables.target.TargetFactory;
 import com.codeforall.simplegraphics.graphics.Color;
 import com.codeforall.simplegraphics.graphics.Text;
-import com.codeforall.simplegraphics.pictures.Picture;
 
 import java.util.ArrayList;
 import java.util.List;

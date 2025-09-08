@@ -1,5 +1,6 @@
-package com.codeforall.online.bullseye.game;
+package com.codeforall.online.bullseye.playables.obstacle;
 
+import com.codeforall.online.bullseye.game.Arena;
 import com.codeforall.online.bullseye.playables.Collidables;
 import com.codeforall.online.bullseye.playables.Entity;
 import com.codeforall.simplegraphics.pictures.Picture;
@@ -13,8 +14,6 @@ public class Obstacle extends Entity implements Collidables {
         obstacleType = randomObstacle();
         this.picture = new Picture(x,y,obstacleType.getPath());
         this.picture.draw();
-        this.x = x;
-        this.y = y;
     }
 
 

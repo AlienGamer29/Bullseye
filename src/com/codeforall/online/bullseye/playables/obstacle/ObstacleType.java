@@ -1,4 +1,4 @@
-package com.codeforall.online.bullseye.game;
+package com.codeforall.online.bullseye.playables.obstacle;
 
 import static com.codeforall.online.bullseye.game.Game.PREFIX;
 
