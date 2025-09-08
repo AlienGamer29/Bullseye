@@ -99,7 +99,7 @@ public class Arrows extends Entity implements Collidables {
         return type;
     }
 
-        public void woosh(Arena arena, int delayMillis) {
+    public void woosh(Arena arena, int delayMillis) {
         int oldX = picture.getX();
         int oldY = picture.getY();
 

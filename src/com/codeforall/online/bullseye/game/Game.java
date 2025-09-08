@@ -334,7 +334,8 @@ public class Game {
 
     public void maybeSpawnObstacles() {
 
-        int wallW = 133, wallH = 119;
+        int wallW = 133;
+        int wallH = 119;
 
         if (wallSpawned>=2) return;
 
