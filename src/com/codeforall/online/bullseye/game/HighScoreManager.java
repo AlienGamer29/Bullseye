@@ -28,7 +28,7 @@ public class HighScoreManager {
             writer = new BufferedWriter(writeFile);
 
             if (score != -1) {
-                writeFile.write(String.valueOf(score));
+                writer.write(String.valueOf(score));
             }
 
         } catch (IOException e) {
