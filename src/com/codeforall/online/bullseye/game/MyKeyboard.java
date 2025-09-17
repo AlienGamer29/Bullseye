@@ -10,30 +10,63 @@ import com.codeforall.simplegraphics.keyboard.KeyboardHandler;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles keyboard input for the game.
+ *
+ * Maps keys to player actions and game controls.
+ */
 public class MyKeyboard implements KeyboardHandler {
+
+    /** SimpleGraphics keyboard wrapper. */
     private Keyboard myKeyboard;
+
+    /** The player controlled by the keyboard. */
     private Player player;
+
+    /** The game arena (needed for movement limits). */
     private Arena arena;
+
+    /** Reference to the main game. */
     private Game game;
+
+    /** Placeholder for arrows to apply cheats (if needed). */
     private List<Arrows> arrows = new ArrayList<>();
 
-
+    /** True while SPACE is being held (prevents autofire). */
     private boolean spaceHeld = false;
 
+    /**
+     * Creates the keyboard handler and registers the keys.
+     *
+     * @param game the game instance to control
+     */
     public MyKeyboard(Game game) {
         myKeyboard = new Keyboard(this);
         this.game = game;
         initKeys();
     }
 
+    /**
+     * Sets the arena and player so movement can be applied.
+     *
+     * @param arena the arena
+     * @param player the player
+     */
     public void setArenaAndPlayer(Arena arena, Player player) {
         this.arena = arena;
         this.player = player;
     }
 
-
-
-
+    /**
+     * Registers all keyboard events used by the game.
+     *
+     * UP/DOWN  -> move player
+     * S        -> start game
+     * R        -> reset game
+     * Q        -> quit
+     * SPACE    -> shoot (with cooldown)
+     * W        -> cheat (woosh)
+     */
     public void initKeys(){
         KeyboardEvent UP = new KeyboardEvent();
         UP.setKey(KeyboardEvent.KEY_UP);
@@ -84,6 +117,11 @@ public class MyKeyboard implements KeyboardHandler {
         myKeyboard.addEventListener(cheatcode);
     }
 
+    /**
+     * Handles key press events and triggers actions.
+     *
+     * @param keyboardEvent the event with the pressed key
+     */
     @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
         int key = keyboardEvent.getKey();
@@ -118,7 +156,11 @@ public class MyKeyboard implements KeyboardHandler {
             }
         }
 
-
+    /**
+     * Handles key release events.
+     *
+     * @param keyboardEvent the event with the released key
+     */
     @Override
     public void keyReleased(KeyboardEvent keyboardEvent) {
         if (keyboardEvent.getKey() == KeyboardEvent.KEY_SPACE){
