@@ -8,10 +8,6 @@ public class Sfx {
 
     private Clip clip;
 
-    private Sfx () {
-        this.clip = clip;
-    }
-
     public static Sfx load (String classpathPath) {
         Sfx s = new Sfx();
         try {
@@ -52,20 +48,6 @@ public class Sfx {
         if (clip == null) return;
         clip.stop();
         clip.setFramePosition(0);
-    }
-
-    public void pause () {
-        if (clip == null) return;
-        clip.stop();
-    }
-
-    public void resume () {
-        if (clip == null) return;
-        clip.start();
-    }
-
-    public void setVolume () {
-
     }
 
     public void prime () {

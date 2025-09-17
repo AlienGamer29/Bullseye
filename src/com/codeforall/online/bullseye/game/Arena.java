@@ -40,14 +40,6 @@ public class Arena {
         return width;
     }
 
-    public int getTop() {
-        return picture.getY();
-    }
-
-    public int getBottom() {
-        return picture.getMaxY();
-    }
-
     public int getTopBush() {
         return picture.getY() + BUSH_PUDDING;
     }
