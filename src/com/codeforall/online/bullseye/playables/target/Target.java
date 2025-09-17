@@ -13,15 +13,7 @@ public class Target extends Entity implements Collidables {
 
     public Target(int x, int y, Direction direction) {
         super(x, y);
-
-        // Create and draw the target picture, resize and recenter
-        this.picture = new Picture(x, y, PREFIX + "target309x314.png");
-        picture.grow(-118, -110);
-        picture.translate(-118, -110);
-        picture.draw();
-
-        this.speed = 1;
-        this.currDirection = direction;
+        displayTarget(direction);
     }
 
     //Getters for picture borders
@@ -82,5 +74,16 @@ public class Target extends Entity implements Collidables {
                 picture.translate(0, speed);
                 break;
         }
+    }
+
+    private void displayTarget(Direction direction) {
+        // Create and draw the target picture, resize and recenter
+        this.picture = new Picture(x, y, PREFIX + "target309x314.png");
+        picture.grow(-118, -110);
+        picture.translate(-118, -110);
+        picture.draw();
+
+        this.speed = 1;
+        this.currDirection = direction;
     }
 }

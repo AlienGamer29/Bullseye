@@ -16,12 +16,7 @@ public class Arrows extends Entity implements Collidables {
 
     public Arrows(int x, int y) {
         super(x, y);
-        setRandomArrow();
-        setPicture();
-        picture.grow(-50, -25);
-        picture.translate(-50, -25);
-        displayArrows(true);
-        setSpeed();
+        displayArrows();
     }
 
     public void setPicture() {
@@ -59,12 +54,13 @@ public class Arrows extends Entity implements Collidables {
         arrowSpeed = type.getSPEED();
     }
 
-    public void displayArrows(Boolean show) {
-        if (show) {
-            picture.draw();
-        } else {
-            picture.delete();
-        }
+    public void displayArrows() {
+        setRandomArrow();
+        setPicture();
+        picture.grow(-50, -25);
+        picture.translate(-50, -25);
+        setSpeed();
+        picture.draw();
     }
 
     @Override

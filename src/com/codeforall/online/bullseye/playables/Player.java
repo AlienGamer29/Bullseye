@@ -15,12 +15,6 @@ public class Player extends Entity {
         super(x, y);
         this.speed = 10;
 
-        int shrinkX = 10;
-        int shrinkY = 10;
-
-        picture = new Picture(x, y,PREFIX + "player_resized.png");
-        picture.grow(-shrinkX, -shrinkY);
-        picture.translate(-shrinkX, -shrinkY);
         displayPlayer();
     }
 
@@ -57,6 +51,11 @@ public class Player extends Entity {
     }
 
     public void displayPlayer() {
+        int shrinkX = 10;
+        int shrinkY = 10;
+        picture = new Picture(x, y,PREFIX + "player_resized.png");
+        picture.grow(-shrinkX, -shrinkY);
+        picture.translate(-shrinkX, -shrinkY);
         this.picture.draw();
     }
 
