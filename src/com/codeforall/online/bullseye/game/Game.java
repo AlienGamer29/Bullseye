@@ -511,6 +511,7 @@ public class Game {
 
     /**
      * Random integer between min and max (inclusive).
+     *
      * @param min minimum value
      * @param maxInclusive maximum value (inclusive)
      * @return a random int in range
@@ -545,6 +546,7 @@ public class Game {
 
     /**
      * Simple AABB intersection using entity bounds.
+     *
      * @param a first collidable
      * @param b second collidable
      * @return true if rectangles overlap
