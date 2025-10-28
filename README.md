@@ -7,15 +7,21 @@ Move the player vertically and **shoot arrows** to hit the bullseye while avoidi
 
 ## 🎮 Gameplay
 
+  <img src="./resources/Game_Capture.png" width="400" alt="Game Capture">
+
 - **Controls:**
-    - `↑ / ↓` – move the player
-    - `Space` – shoot
+      - `↑ / ↓` – move the player
+      - `Space` – shoot
+    -  `S` - start
+    -  `Q` - quit game
+    -  `R` - return
 - **Arrow types (randomized):**
-    - **Blue** – very fast, medium score
-    - **Green** – very slow, high score
+      - **Blue** – very fast, medium score
+      - **Green** – very slow, high score
     - **Red** – normal speed, base score
 - **Obstacles:** spawn randomly; **colliding costs −10 points**.
 - **Goal:** maximize your score by timing shots and managing arrow speed vs. target position.
+
 
 ---
 
