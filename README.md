@@ -72,6 +72,13 @@ Move the player vertically and **shoot arrows** to hit the bullseye while avoidi
 
 ---
 
+## 🧩 UML Diagram
+
+The initial class design was created using [MermaidChart](https://www.mermaidchart.com/app/projects/58545485-6851-4bad-973c-65e455e56b7d/diagrams/09cd24dd-a293-4801-acb0-4fd7ece9a00a/share/invite/...).  
+It represents the first version of the game's class structure before small implementation adjustments.
+
+📄 [View UML source file](docs/bullseye_uml_initial.mmd)
+
 ## 🚀 Run locally
 
 > Requires Java (JDK 17+ recommended) and Ant (optional, if you want to rebuild).
