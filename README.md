@@ -79,6 +79,8 @@ It represents the first version of the game's class structure before small imple
 
 📄 [View UML source file](docs/bullseye_uml_initial.mmd)
 
+![Bullseye UML Diagram](docs/Bullseye___Mermaid_Chart-2025-08-22-201240.png)
+
 ## 🚀 Run locally
 
 > Requires Java (JDK 17+ recommended) and Ant (optional, if you want to rebuild).
