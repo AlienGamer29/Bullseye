@@ -1,0 +1,88 @@
+---
+config:
+  theme: mc
+  look: classic
+  layout: dagre
+---
+classDiagram
+direction TB
+    class Game {
+	    - Arena arena
+	    - Keyboard keyboard
+	    - Player player
+	    - List~Arrow~ arrows
+	    - List~Target~ targets
+	    - int score
+	    + init() void inicia objectos
+	    + start() void loop chama updates e checkCollision
+	    + update() void ?
+	    + playerShoot() void calls player.shoot e guarda arrows
+	    + checkCollisions() void colisoes e setas fora de arena
+    }
+    class Entity {
+	    - protected int x
+	    - protected int y
+	    - protected int speed usado para translate
+        - protected Picture picture
+    }
+    class Player {
+	    propriedades estão na superclass
+	    - int maxArrows
+        
+	    + moveUp(Arena) void
+	    + moveDown(Arena) void
+	    + shoot() Arrow
+    }
+    class Collidable {
+	    + int getX()
+	    + int getY()
+	    + int getMaxX()
+	    + int getMaxY()
+    }
+    class Arrow {
+	    propriedades estão na superclass
+	    + update(Arena) void
+    }
+    class Target {
+	    propriedades estão na superclass
+	    + update(Arena) void
+    }
+    class TargetFactory {
+        - Target target
+	    + createTarget(x:int,y:int,speed:int) Target
+    }
+    class  myKeyboard {
+	    - Keyboard keyboard
+	    - Player player
+	    - Game game
+	    + keyPressed() void
+	    + keyReleased() void fica vazio?
+	    teclas:()
+	    Q() - sair de jogo
+	    Up - player.moveUp()
+	    Down - player.moveDown()   
+        Space - game.playerShoot()
+    }
+    class Arena {
+	    - int width
+	    - int height
+        - Picture picture
+	    + getTop() int
+	    + getBottom() int
+	    + isInside(x:int,y:int) boolean
+    }
+
+	<<AbstractSuperclass>> Entity
+	<<Interface>> Collidable
+
+    Game --> Arena
+    Game --> myKeyboard
+    Game --> Player
+    Game --> "0..*" Arrow
+    Game --> "0..*" Target
+    Entity <-- Player
+    Entity <-- Arrow
+    Entity <-- Target
+    Arrow ..|> Collidable
+    Target ..|> Collidable
+    Game --> TargetFactory
