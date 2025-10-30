@@ -40,7 +40,7 @@ public class Game {
     private Player player;
 
     /** Number of arrows left to shoot. */
-    int maxArrows;
+    private int maxArrows;
 
     /** Current score. */
     private int score = 0;
