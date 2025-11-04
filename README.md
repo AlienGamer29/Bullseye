@@ -25,7 +25,7 @@ Move the player vertically and **shoot arrows** to hit the bullseye while avoidi
 
 ---
 
-## ✨ Features
+## Features
 
 - OOP design with **inheritance** and **composition**
 - **Enums** for arrow configuration (sprite, speed, score)
@@ -36,7 +36,7 @@ Move the player vertically and **shoot arrows** to hit the bullseye while avoidi
 
 ---
 
-## 🗂️ Project structure
+## Project structure
 
 ```
 .
@@ -72,7 +72,7 @@ Move the player vertically and **shoot arrows** to hit the bullseye while avoidi
 
 ---
 
-## 🧩 UML Diagram
+## UML Diagram
 
 The initial class design was created using [MermaidChart](https://www.mermaidchart.com/app/projects/58545485-6851-4bad-973c-65e455e56b7d/diagrams/09cd24dd-a293-4801-acb0-4fd7ece9a00a/share/invite/...).  
 It represents the first version of the game's class structure before small implementation adjustments.
@@ -81,7 +81,7 @@ It represents the first version of the game's class structure before small imple
 
 ![Bullseye UML Diagram](docs/Bullseye___Mermaid_Chart-2025-08-22-201240.png)
 
-## 🚀 Run locally
+## Run locally
 
 > Requires Java (JDK 17+ recommended) and Ant (optional, if you want to rebuild).
 
@@ -101,7 +101,7 @@ If you change assets, keep paths consistent with `resources/` and the enum `Arro
 
 ---
 
-## 🧠 Design notes
+## Design notes
 
 - **ArrowTypes enum** centralizes per-type config (sprite path, speed, score).
 - **Entities** share common behavior via `Entity` + **Collidables** interface.
@@ -112,7 +112,7 @@ If you change assets, keep paths consistent with `resources/` and the enum `Arro
 
 ---
 
-## 📦 Tech stack
+## Tech stack
 
 - **Java** (OOP, enums, inheritance)
 - **SimpleGraphics** for drawing and input
@@ -120,7 +120,7 @@ If you change assets, keep paths consistent with `resources/` and the enum `Arro
 
 ---
 
-## 🔭 Future improvements
+## Future improvements
 
 - Difficulty scaling (spawn rates, speeds)
 - Pause/menu screens and better HUD
@@ -129,6 +129,6 @@ If you change assets, keep paths consistent with `resources/` and the enum `Arro
 
 ---
 
-## 👥 Credits
+## Credits
 
 Developed by a team of four colleagues as part of the **Code for All** bootcamp.  
