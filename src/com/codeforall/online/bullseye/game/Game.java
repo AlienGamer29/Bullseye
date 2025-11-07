@@ -11,34 +11,92 @@ import com.codeforall.simplegraphics.graphics.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Main game controller.
+ *
+ * Handles setup, game loop, input, scoring and end screens.
+ */
 public class Game {
 
+    /** Path prefix for resource files (images/sounds). */
     public static final String PREFIX = "resources/";
+
+    /** The game arena (background and limits). */
     private Arena arena;
+
+    /** Keyboard handler for player input. */
     private MyKeyboard myKeyboard;
+
+    /** List of arrows currently on screen. */
     private List<Arrows> arrows = new ArrayList<>();
+
+    /** List of targets currently on screen. */
     private List<Target> targets = new ArrayList<>();
+
+    /** List of obstacles. */
     private List<Obstacle> obstacles = new ArrayList<>();
+
+    /** The player character. */
     private Player player;
-    int maxArrows;
+
+    /** Number of arrows left to shoot. */
+    private int maxArrows;
+
+    /** Current score. */
     private int score = 0;
+
+    /** Total number of targets to spawn. */
     private final int NUMBER_OF_TARGETS = 10;
+
+    /** Delay in milliseconds between loop ticks. */
     private final int DELAY = 16;
+
+    /** Initial arrows available at the start. */
     private final int ARROWS_AVAILABLE = 15;
+
+    /** Text element showing the score. */
     private Text scoreText;
+
+    /** Text element showing the arrows left. */
     private Text arrowsText;
+
+    /** Text element showing the highest score. */
     private Text highestScore;
+
+    /** Minimum time between shots (ms). */
     private final int COOLDOWN_MS = 600;
+
+    /** Timestamp of the last shot. */
     private long lastShotMs = -COOLDOWN_MS;
+
+    /** Holds and draws the different game screens (intro, win, over). */
     private GameState gameState;
+
+    /** True while the game loop is running. */
     private boolean running = false;
+
+    /** Game loop thread. */
     private Thread gameThread;
+
+    /** Sound effects. */
     private Sfx Shoot, Hit, Win, Lose;
+
+    /** Background music. */
     private Sfx bgm;
+
+    /** How many walls have been spawned. */
     private int wallSpawned = 0;
+
+    /** Minimum distance from the player to place obstacles. */
     private static final int MIN_GAP_FROM_PLAYER = 100;
+
+    /** Persisted highest score (loaded/saved). */
     private int highScore = -1;
 
+    /**
+     * Initializes the intro screen and loads sounds.
+     * Call this first to start the game flow.
+     */
     public void initIntro() {
 
         bgm = Sfx.load("/Sound/Background.wav");
@@ -59,6 +117,10 @@ public class Game {
     }
 
 
+    /**
+     * Sets up a new match: arena, player, targets and HUD.
+     * Starts the game loop at the end.
+     */
     public void initGame() {
 
         //System.out.println("Initializing game");
@@ -88,7 +150,10 @@ public class Game {
         start();
     }
 
-
+    /**
+     * Starts the main game loop in a separate thread.
+     * Does nothing if already running.
+     */
     public void start() {
 
         //System.out.println("Starting game loop");
@@ -131,6 +196,9 @@ public class Game {
 
     }
 
+    /**
+     * Stops the game loop thread (if running).
+     */
     private void stop() {
         running = false;
         if (gameThread != null) {
@@ -138,7 +206,10 @@ public class Game {
         }
     }
 
-
+    /**
+     * Tries to shoot one arrow.
+     * Respects cooldown and arrow stock.
+     */
     public void playerShoot() {
         //System.out.println("Number of arrows left: " + maxArrows);
         if (maxArrows <= 0) {
@@ -157,18 +228,28 @@ public class Game {
 
     }
 
+    /**
+     * Updates all targets (movement).
+     */
     private void moveAllTargets() {
         for (Target t : targets) {
             t.update(arena);
         }
     }
 
+    /**
+     * Updates all arrows (movement).
+     */
     private void moveAllArrows() {
         for (Arrows a : arrows) {
             a.update(arena);
         }
     }
 
+    /**
+     * Checks arrow-target collisions.
+     * Removes hit targets and arrows and adds score.
+     */
     private void checkCollision() {
         //System.out.println("Number of arrows: " + arrows.size() + ". Number of targets: " + targets.size());
         List<Arrows> aToRemove = new ArrayList<>();
@@ -209,7 +290,9 @@ public class Game {
         //System.out.println("Number of arrows: " + arrows.size() + ". Number of targets: " + targets.size());
     }
 
-
+    /**
+     * Removes arrows that left the arena on the right side.
+     */
     private void overTheBush() {
         //System.out.println("Arrows left: " + maxArrows);
         List<Arrows> toRemove = new ArrayList<>();
@@ -225,7 +308,10 @@ public class Game {
         //System.out.println("Arrows left: " + maxArrows);
     }
 
-
+    /**
+     * Draws the score text on screen.
+     * @param score current score
+     */
     private void scoreDisplay(int score) {
         scoreText = new Text(arena.getRight()-100, 10, "Score: " + score);
         scoreText.grow(45, 17);
@@ -233,6 +319,10 @@ public class Game {
         scoreText.draw();
     }
 
+    /**
+     * Draws the arrows-left text on screen.
+     * @param maxArrows arrows remaining
+     */
     private void maxArrowsDisplay(int maxArrows) {
 
         arrowsText = new Text(arena.getLeft()+80, 10, "Arrows left: " + maxArrows);
@@ -241,11 +331,17 @@ public class Game {
 
     }
 
+    /**
+     * Refreshes HUD texts (score and arrows left).
+     */
     private void updateHUD() {
         scoreText.setText("Score: " + score);
         arrowsText.setText("Arrows left: " + maxArrows);
     }
 
+    /**
+     * Shows the Game Over screen and plays the sound.
+     */
     private void showGameOver() {
 
         bgm.stop();
@@ -254,7 +350,9 @@ public class Game {
         Lose.play();
     }
 
-
+    /**
+     * Resets everything and returns to the intro screen.
+     */
     public void resetGame() {
 
         //System.out.println("Restarting game");
@@ -279,19 +377,27 @@ public class Game {
         initIntro();
     }
 
+    /**
+     * Deletes all arrow pictures from the screen.
+     */
     private void removeArrowsPicture() {
         for (Arrows a : arrows) {
             a.removePicture();
         }
     }
 
+    /**
+     * Deletes all target pictures from the screen.
+     */
     private void removeTargetsPicture() {
         for (Target t : targets) {
             t.removePicture();
         }
     }
 
-
+    /**
+     * Draws the highest score text.
+     */
     private void displayHighScore() {
         highestScore = new Text(500, 150, "Highest Score: " + highScore);
         highestScore.setColor(Color.WHITE);
@@ -299,6 +405,9 @@ public class Game {
         highestScore.draw();
     }
 
+    /**
+     * Shows the Game Win screen and plays the sound.
+     */
     public void showGameWin() {
         bgm.stop();
         gameState.displayGameWin();
@@ -306,6 +415,9 @@ public class Game {
         Win.play();
     }
 
+    /**
+     * Shows the final screen (win or game over) and the high score.
+     */
     private void endGame() {
         //System.out.println("Number of targets: " + targets.size() + ". Number of arrows left: " + maxArrows);
         if (score > highScore) {
@@ -324,6 +436,9 @@ public class Game {
 
     }
 
+    /**
+     * Saves a new high score if the player beat the previous one.
+     */
     private void checkHighScore() {
         if (score > highScore) {
             //System.out.println("Player Score: " + score + ", HighScore: " + highScore);
@@ -332,6 +447,10 @@ public class Game {
         }
     }
 
+    /**
+     * Spawns up to two wall obstacles when certain conditions are met.
+     * First in the top half, then in the bottom half.
+     */
     public void maybeSpawnObstacles() {
 
         int wallW = 133;
@@ -390,11 +509,22 @@ public class Game {
 
     }
 
+    /**
+     * Random integer between min and max (inclusive).
+     *
+     * @param min minimum value
+     * @param maxInclusive maximum value (inclusive)
+     * @return a random int in range
+     */
     private int rand(int min, int maxInclusive) {
         return java.util.concurrent.ThreadLocalRandom.current()
                 .nextInt(min, maxInclusive + 1);
     }
 
+    /**
+     * Checks collisions between arrows and obstacles.
+     * Removes the arrow and subtracts score when hit.
+     */
     private void checkArrowObstacleCollisions() {
         if (obstacles.isEmpty() || arrows.isEmpty()) return;
 
@@ -414,10 +544,20 @@ public class Game {
         arrows.removeAll(toRemove);
     }
 
+    /**
+     * Simple AABB intersection using entity bounds.
+     *
+     * @param a first collidable
+     * @param b second collidable
+     * @return true if rectangles overlap
+     */
     private boolean intersects(Collidables a, Collidables b) {
         return a.getMaxX() > b.getX() && a.getX() < b.getMaxX() &&  a.getMaxY() > b.getY() && a.getY() < b.getMaxY();
     }
 
+    /**
+     * Clears all obstacles from the screen and resets the counter.
+     */
     private void clearObstacles() {
         for (Obstacle o : obstacles) {
             o.removePicture();
@@ -426,6 +566,12 @@ public class Game {
         wallSpawned = 0;
     }
 
+    /**
+     * Returns an X coordinate to keep new obstacles away from the nearest target.
+     * Uses the leftmost target and pushes obstacle at least half an arena width behind it.
+     *
+     * @return a safe maximum X for spawning obstacles
+     */
     private int setDistanceFromTargets() {
 
         Target current = targets.get(0);

@@ -5,16 +5,32 @@ import com.codeforall.simplegraphics.pictures.Picture;
 
 import static com.codeforall.online.bullseye.game.Game.PREFIX;
 
-
+/**
+ * Represents the game arena
+ *
+ *  The arena has a background image and defines the limits
+ *  where the game elements can move.
+ */
 public class Arena {
 
+    /** The width of the arena */
     private int width;
+
+    /** The height of the arena */
     private int height;
+
+    /** The background picture of the arena */
     private Picture picture;
+
+    /** Space between the bushes and the border of the image */
     private final int BUSH_PUDDING = 50;
 
 
-
+    /**
+     * Creates an arena with a background image
+     *
+     * Also adjusts the canvas size to match the image.
+     */
     public Arena() {
 
         picture = new Picture(0, 0, PREFIX + "background.jpeg");
@@ -32,46 +48,47 @@ public class Arena {
         displayArena();
     }
 
+    /** @return the height of the arena */
     public int getHeight() {
         return height;
     }
 
+    /** @return the width of the arena */
     public int getWidth() {
         return width;
     }
 
-    public int getTop() {
-        return picture.getY();
-    }
-
-    public int getBottom() {
-        return picture.getMaxY();
-    }
-
+    /** @return the Y coordinate of the top bush */
     public int getTopBush() {
         return picture.getY() + BUSH_PUDDING;
     }
 
+    /** @return the Y coordinate of the bottom bush */
     public int getBottomBush() {
         return picture.getMaxY() - BUSH_PUDDING;
     }
 
+    /** @return the X coordinate of the right border */
     public int getRight() {
         return picture.getMaxX();
     }
 
+    /** @return the X coordinate of the left border */
     public int getLeft() {
         return picture.getX();
     }
 
+    /** @return the space between bushes and border */
     public int getBUSH_PUDDING() {
         return BUSH_PUDDING;
     }
 
+    /** Removes the background picture from the screen */
     public void removePicture() {
         picture.delete();
     }
 
+    /** Displays the background picture of the arena */
     public void displayArena() {
         picture.draw();
 

@@ -9,26 +9,36 @@ import java.util.TimerTask;
 
 import static com.codeforall.online.bullseye.game.Game.PREFIX;
 
+/**
+ * Represents the player in the game.
+ *
+ * The player can move up and down, shoot arrows and use the "woosh" cheat.
+ */
 public class Player extends Entity {
 
+    /**
+     * Creates a player at the given position.
+     *
+     * @param x starting X
+     * @param y starting Y
+     */
     public Player(int x, int y) {
         super(x, y);
         this.speed = 10;
 
-        int shrinkX = 10;
-        int shrinkY = 10;
-
-        picture = new Picture(x, y,PREFIX + "player_resized.png");
-        picture.grow(-shrinkX, -shrinkY);
-        picture.translate(-shrinkX, -shrinkY);
         displayPlayer();
     }
 
+    /**
+     * Moves the player up inside the arena limits.
+     *
+     * @param arena the game arena
+     */
     public void moveUp(Arena  arena) {
         int oldY = y;
 
-        int minY = arena.getTopBush(); //impede o player de passar o arbusto
-        int maxY = arena.getBottomBush() - picture.getHeight(); //igual ao top margin mas para baixo
+        int minY = arena.getTopBush();
+        int maxY = arena.getBottomBush() - picture.getHeight();
 
         int newY = y - speed;
         y = Math.max(minY, Math.min(newY, maxY));
@@ -36,6 +46,11 @@ public class Player extends Entity {
         picture.translate(0, y - oldY);
     }
 
+    /**
+     * Moves the player down inside the arena limits.
+     *
+     * @param arena the game arena
+     */
     public void moveDown(Arena arena) {
         int oldY = y;
 
@@ -48,21 +63,37 @@ public class Player extends Entity {
         picture.translate(0, y - oldY);
     }
 
+    /**
+     * Shoots a new arrow from the player's position.
+     *
+     * @return the new arrow
+     */
     public Arrows shoot() {
-        int arrowX = x + picture.getWidth();// spawn ao lado direito do player
-        int arrowY = y + picture.getHeight() / 2; // spawn ao centro da imagem do player
+        int arrowX = x + picture.getWidth();
+        int arrowY = y + picture.getHeight() / 2;
 
         return new Arrows(arrowX, arrowY);
 
     }
 
+    /** Draws the player on the screen. */
     public void displayPlayer() {
+        int shrinkX = 10;
+        int shrinkY = 10;
+        picture = new Picture(x, y,PREFIX + "player_resized.png");
+        picture.grow(-shrinkX, -shrinkY);
+        picture.translate(-shrinkX, -shrinkY);
         this.picture.draw();
     }
 
-
+    /**
+     * Teleports the player to the middle of the arena (woosh cheat).
+     * After a delay, returns to the old position.
+     *
+     * @param arena the arena
+     * @param delayMillis delay before returning, in milliseconds
+     */
     public void woosh(Arena arena, int delayMillis) {
-        // guardar a posição atual antes de woosh -> translate para a nova posição -> guarda a nova posição -> translate para a posição antiga
 
         int oldX = picture.getX();
         int oldY = picture.getY();
@@ -87,26 +118,11 @@ public class Player extends Entity {
     }
 
 
-    public int getX() {
-        return x;
-    }
-    public int getY() {
-        return y;
-    }
-
-    public int getWidth() {
-        return picture.getWidth();
-    }
-    public int getHeight() {
-        return picture.getHeight();
-    }
-
+    /** @return the right edge X of the player */
     public int getRight() {
         return x + picture.getWidth();
     }
-    public int getLeft() {
-        return x - picture.getWidth();
-    }
+
 
 
 }
